@@ -1,0 +1,272 @@
+<!doctype html>
+<html class="no-js h-100" lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Shards Dashboard Lite - Free Bootstrap Admin Template – DesignRevision</title>
+    <meta name="description" content="A high-quality &amp; free Bootstrap admin dashboard template pack that comes with lots of templates and components.">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" id="main-stylesheet" data-version="1.0.0" href="styles/shards-dashboards.1.0.0.min.css">
+    <link rel="stylesheet" href="styles/extras.1.0.0.min.css">
+    <link rel="stylesheet" href="styles/vendor/main.css">
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+  </head>
+  <body class="h-100">
+    <div class="container-fluid bg-white">
+        <div class="row">
+            <main class="main-content col-lg-12 col-md-12 col-sm-12 p-0">
+                <div class="main-navbar nav-up">
+                  <div class="container p-0">
+                    <!-- Main Navbar -->
+                    <nav class="navbar align-items-stretch navbar-light  flex-md-nowrap p-0">
+                      <a class="navbar-brand" href="#" style="line-height: 25px;">
+                        <div class="d-table m-auto">
+                          <img id="main-logo" class="d-inline-block align-top mr-1 ml-3" style="max-width: 25px;" src="images/ub.png" alt="Shards Dashboard">
+                          <span class="d-none d-md-inline ml-1 text-white">FEB UB</span>
+                        </div>
+                      </a>
+                     
+                      <ul class="navbar-nav flex-row  ml-auto">
+                        <li class="nav-item dropdown text-white">
+                          <a class="nav-link text-nowrap px-3" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                            <img class="user-avatar rounded-circle mr-2" src="images/avatars/0.jpg" alt="User Avatar"> <span class="d-none d-md-inline-block text-white">Mahasiswa Pintar</span>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-small text-white">
+                            <a class="dropdown-item" href="edit-user-profile.html"><i class="material-icons"></i> Edit Password</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="#">
+                              <i class="material-icons text-danger"></i> Logout </a>
+                          </div>
+                        </li>
+                      </ul>
+                      <nav class="nav">
+                        <a href="#" class="nav-link nav-link-icon toggle-sidebar d-md-inline d-lg-none text-center " data-toggle="collapse" data-target=".header-navbar" aria-expanded="false" aria-controls="header-navbar">
+                          <i class="material-icons text-white"></i>
+                        </a>
+                      </nav>
+                    </nav>
+                  </div> <!-- / .container -->
+                </div> <!-- / .main-navbar -->
+                <div class="header-navbar collapse d-lg-flex p-0 nav-down ">
+                  <div class="container">
+                    <div class="row">
+                      <div class="col">
+                        <ul class="nav  border-0 flex-column flex-lg-row ">
+                          <li class="nav-item">
+                            <a href="home.html" class="nav-link  text-white"><i class="material-icons">toc</i> Jadwal Kuliah</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="agenda.html" class="nav-link  text-white"><i class="material-icons">event</i> Agenda</a>
+                          </li>
+                          <li class="nav-item">
+                            <a href="ruangan.html" class="nav-link  text-white"><i class="material-icons">picture_in_picture</i> Ruangan</a>
+                          </li>
+                          <li class="nav-item ">
+                              <a class="nav-link dropdown-toggle text-white" data-toggle="dropdown" href="#" role="button">
+                                <span><i class="material-icons">view_module</i>Sarana & Prasarana</span>
+                              </a>
+                              <div class="dropdown-menu dropdown-menu-small">
+                              <a href="peminjaman_rutin.html" class="dropdown-item">Ruang Rutin</a>
+                              <a href="peminjaman_non_rutin.html" class="dropdown-item">Ruang Non Rutin</a>
+                              <a href="inventaris.html" class="dropdown-item">Inventaris</a>
+                            </li>
+                          <li class="nav-item">
+                            <a href="transaksi.html" class="nav-link text-white"><i class="material-icons"></i> Transaksi</a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="main-content-container container-fluid">
+                  <!-- Page Header -->
+                  <div class="page-header row no-gutters py-4">
+                    <div class="col-12 col-sm-6 text-center text-sm-left mb-4 mb-sm-0">
+                        <span class="text-uppercase page-subtitle">Status Ruangan Rutin</span>
+                        <h3 class="page-title">Perkuliahan</h3>
+                    </div>
+                    <div class="col-12 col-sm-6 text-center text-sm-left mb-4 mb-sm-0">
+                    <form action="<?php echo site_url('admin/filter_surat');?>"  method="get" style="float:right" >
+                    <div id="transaction-history-date-range" class="input-daterange input-group  input-group-sm ml-auto">
+                      <select  name="bln1" class="custom-select custom-select-sm" style="min-width: 100px;">
+                        <option value="1" selected>Gedung</option>
+                        <option value="2">GU</option>
+                        <option value="3">A</option>
+                        <option value="2">B</option>
+                        <option value="3">C</option>
+                        <option value="2">D</option>
+                        <option value="3">E</option>
+                        <option value="2">F</option>
+                    </select>  
+                    <select  name="bln1" class="custom-select custom-select-sm" style="min-width: 100px;">
+                            <option value="1" selected>Ruangan</option>
+                            <option value="2">A.1.1</option>
+                            <option value="3">A.1.2</option>
+                            <option value="2">f.1.1</option>
+                            <option value="3">f.1.2</option>
+                            <option value="2">c.1.1</option>
+                            <option value="3">c.1.2</option>
+                            <option value="2">A.1.1</option>
+                            <option value="3">A.1.2</option>
+                            <option value="2">A.1.1</option>
+                            <option value="3">A.1.2</option>
+                        </select>
+                        <select  name="bln1" class="custom-select custom-select-sm" style="min-width: 100px;">
+                          <option value="1" selected>Hari</option>
+                          <option value="2">Senin</option>
+                          <option value="3">Selasa</option>
+                          <option value="2">Rabu</option>
+                          <option value="3">Kamis</option>
+                          <option value="2">Jumat</option>
+                          <option value="3">Saptu</option>
+                          <option value="2">Minggu</option>
+                      </select>  
+                        <button  type="submit" class="input-group-append form-control btn btn-white" style="max-width: 40px;">
+                            <i class="material-icons">search</i>
+                        </button>
+                    </div>
+                    </form>
+                    </div>
+                </div>
+                  <!-- End Page Header -->
+                  <!-- Small Stats Blocks -->
+                  <div class="row col col-md-4 mb-2 jadwal-color">
+                        <div class="col mb-4">
+                          <div class="col-biru text-center p-1">Digunakan</div>
+                        </div>
+                        <div class="col mb-4">
+                          <div class="col-muted text-center p-1">Tidak Digunakan</div>
+                        </div>
+                      </div>
+
+                  <!-- End Small Stats Blocks -->
+                  <div class="row">
+                    <div class="col">
+                      <div class="  mb-4">
+                        <div class=" p-0 pb-3 text-center">
+                          <table class="table mb-0 table-bordered" >
+                            <thead class="bg-light">
+                              <tr>
+                                <th >R/J</th>
+                                <th>07:00 - 09:29</th>
+                                <th>09:30 - 12:00</th>
+                                <th style="max-width:100px">12:00 - 12:50</th>
+                                <th>12:50 - 15:20</th>
+                                <th >15:20 - 17:00</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>5D-D2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>6D-D4.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>5E-D2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-secondary"><i class="material-icons">close</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>3G-D2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>2D-E2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>5D-E2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-secondary"><i class="material-icons">close</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>5D-D2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>5D-D2.1</td>
+                                <td><span class="badge badge-pill badge-secondary"><i class="material-icons">close</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>5D-D2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-secondary"><i class="material-icons">close</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                              <tr>
+                                <td>5D-D2.1</td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                                <td style="max-width:100px"></td>
+                                <td><span class="badge badge-pill badge-secondary"><i class="material-icons">close</i></span></td>
+                                <td><span class="badge badge-pill badge-primary"><i class="material-icons">check</i></span></td>
+                              </tr>
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                
+                </div>
+               
+              </main>
+        </div>
+      </div>
+    <script>
+        $("#menu-toggle").click(function(e) {
+            e.preventDefault();
+            $("#wrapper").toggleClass("toggled");
+        });
+        </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+    <script src="https://unpkg.com/shards-ui@latest/dist/js/shards.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Sharrre/2.0.1/jquery.sharrre.min.js"></script>
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="scripts/shards-dashboards.1.0.0.min.js"></script>
+    <script src="scripts/app/app-blog-overview.1.0.0.js"></script>
+  </body>
+</html>

@@ -1,0 +1,85 @@
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~
+$ ls
+'3D Objects'/                        Documents/              NetHood@                                                                                       Recent@
+ aaa/                                Downloads/              Nox_share/                                                                                    'Saved Games'/
+ advanced_ip_scanner_Aliases.bin     Favorites/              NTUSER.DAT                                                                                     Searches/
+ advanced_ip_scanner_Comments.bin    genymotion-log.zip      ntuser.dat.LOG1                                                                                SendTo@
+ advanced_ip_scanner_Favorites.bin   inittk.ini              ntuser.dat.LOG2                                                                                source/
+ advanced_ip_scanner_MAC.bin         inst.ini                NTUSER.DAT{89947a08-831e-11e8-bc2f-b4b4491d85ad}.TM.blf                                       'Start Menu'@
+ AndroidStudioProjects/              Justinmind/             NTUSER.DAT{89947a08-831e-11e8-bc2f-b4b4491d85ad}.TMContainer00000000000000000001.regtrans-ms   Templates@
+ Andy/                               Links/                  NTUSER.DAT{89947a08-831e-11e8-bc2f-b4b4491d85ad}.TMContainer00000000000000000002.regtrans-ms   Videos/
+ AppData/                           'Local Settings'@        ntuser.ini                                                                                    'VirtualBox VMs'/
+'Application Data'@                  MicrosoftEdgeBackups/   nuuid.ini                                                                                      vmlogs/
+ Contacts/                           MKPLproject/            OneDrive/
+ Cookies@                            Music/                  Pictures/
+ Desktop/                           'My Documents'@          PrintHood@
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~
+$ cd MKPLproject/
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git push origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'origin'
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git push -u origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'origin'
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git init
+Reinitialized existing Git repository in C:/Users/hanzt/MKPLproject/.git/
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git push -u origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'origin'
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git remote add origin https://github.com/Hanseko/branch.git
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git push -u origin master
+error: src refspec master does not match any.
+error: failed to push some refs to 'https://github.com/Hanseko/branch.git'
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git status
+On branch master
+
+No commits yet
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+
+        Readme.txt
+
+nothing added to commit but untracked files present (use "git add" to track)
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git add .
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git commit -m "Push pertama"
+[master (root-commit) 29c5be4] Push pertama
+ 1 file changed, 0 insertions(+), 0 deletions(-)
+ create mode 100644 Readme.txt
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$ git push -u origin master
+Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 216 bytes | 108.00 KiB/s, done.
+Total 3 (delta 0), reused 0 (delta 0)
+remote:
+remote: Create a pull request for 'master' on GitHub by visiting:
+remote:      https://github.com/Hanseko/branch/pull/new/master
+remote:
+To https://github.com/Hanseko/branch.git
+ * [new branch]      master -> master
+Branch 'master' set up to track remote branch 'master' from 'origin'.
+
+hanzt@DESKTOP-H2GEVOQ MINGW64 ~/MKPLproject (master)
+$
