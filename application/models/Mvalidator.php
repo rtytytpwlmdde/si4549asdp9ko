@@ -120,12 +120,13 @@ class Mvalidator extends CI_Model{
 			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
 			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
 			
-			if (preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$search)) {
+		
+			if (preg_match("/\d{2}\-\d{2}-\d{4}/", $search)) {
 				$mulai = explode("-", $search);
-				$tahun = $mulai[0];
+				$tanggal = $mulai[0];
 				$bulan = $mulai[1];
-				$tanggal = $mulai[2];
-				$tgl = $tanggal."-".$bulan."-".$tahun;
+				$tahun = $mulai[2];
+				$tgl = $tahun."-".$bulan."-".$tanggal;
 				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
 				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
 			} 

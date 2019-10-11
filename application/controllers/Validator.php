@@ -348,7 +348,7 @@ class Validator extends CI_Controller{
 		$this->pagination->initialize($config);	
 		$data['peminjaman_non_rutin'] = $this->Mvalidator->get_all_data_peminjaman_non_rutin($config['per_page'],$from);
 
-		
+
 		$data['main_view'] = 'validator/v_list_peminjaman_non_rutin';
 		$this->load->view('template/template_validator',$data);
 	}
