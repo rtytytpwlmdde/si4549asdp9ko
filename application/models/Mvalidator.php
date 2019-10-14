@@ -101,12 +101,76 @@ class Mvalidator extends CI_Model{
 		$query = $this->db->get();
 		return $query->result();
 	}
-	//alvin
+	
 	function get_all_data_peminjaman_non_rutin($number,$offset){
 		$status = $this->input->post('status'); //alvin
 		$search = $this->input->post('search'); //alvin
 		$akses = $this->session->userdata('username'); //alvin
-		$this->db->select('peminjaman_non_rutin.*', 'ruangan.username' );
+		$this->db->select('peminjaman_non_rutin.*' );
+		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
+		$this->db->join('detail_peminjaman_non_rutin', 'peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
+		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
+		$this->db->where('ruangan.username', $akses);
+		if($status != null){
+			$this->db->where('peminjaman_non_rutin.status', $status);
+		}
+		if($search != null){
+			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
+			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
+			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
+			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
+				$mulai = explode("-", $search);
+				$tahun = $mulai[2];
+				$bulan = $mulai[1];
+				$tanggal = $mulai[0];
+				$tgl = $tahun."-".$bulan."-".$tanggal;
+				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
+				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
+			} 
+		}
+		$this->db->distinct();
+		$query = $this->db->get('peminjaman_non_rutin',$number,$offset);
+		return $query->result();
+	}
+
+	//alvin
+	function get_all_data_peminjaman_non_rutin_wakadek($number,$offset){
+		$status = $this->input->post('status'); //alvin
+		$search = $this->input->post('search'); //alvin
+		$this->db->select('*');
+		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
+		$this->db->join('penyelenggara', 'penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
+		$this->db->where('peminjaman_non_rutin.status !=','pending');
+		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
+		$this->db->where('penyelenggara.status', '1');
+		if($status != null){
+			$this->db->where('peminjaman_non_rutin.status', $status);
+		}
+		if($search != null){
+			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
+			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
+			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
+			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
+				$mulai = explode("-", $search);
+				$tahun = $mulai[2];
+				$bulan = $mulai[1];
+				$tanggal = $mulai[0];
+				$tgl = $tahun."-".$bulan."-".$tanggal;
+				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
+				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
+			} 
+		}
+		$this->db->distinct();
+		$query = $this->db->get('peminjaman_non_rutin',$number,$offset);
+		return $query->result();
+	}
+
+	function jumlah_data(){
+		$status = $this->input->post('status'); //alvin
+		$search = $this->input->post('search'); //alvin
+		$akses = $this->session->userdata('username'); //alvin
+		$this->db->select('peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
 		$this->db->join('detail_peminjaman_non_rutin', 'peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
@@ -120,50 +184,53 @@ class Mvalidator extends CI_Model{
 			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
 			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
 			
-		
-			if (preg_match("/\d{2}\-\d{2}-\d{4}/", $search)) {
+			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
 				$mulai = explode("-", $search);
-				$tanggal = $mulai[0];
-				$bulan = $mulai[1];
 				$tahun = $mulai[2];
+				$bulan = $mulai[1];
+				$tanggal = $mulai[0];
 				$tgl = $tahun."-".$bulan."-".$tanggal;
 				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
 				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
 			} 
 		}
-		//$this->db->distinct();
-		$query = $this->db->get('peminjaman_non_rutin',$number,$offset);
-		return $query->result();
+		$this->db->distinct('');
+		$query = $this->db->get('peminjaman_non_rutin');
+		return 	$query->num_rows();	
 	}
 
-	function jumlah_data(){
+	//alvin
+	function jumlah_data_wakadek(){
 		$status = $this->input->post('status'); //alvin
-		$akses = $this->session->userdata('username'); //alvin
-		$this->db->select('peminjaman_non_rutin.id_peminjaman_non_rutin' );
+		$search = $this->input->post('search'); //alvin
+		$this->db->select('peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
-		$this->db->join('detail_peminjaman_non_rutin', 'peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
-		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->join('penyelenggara', 'penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
+		$this->db->where('peminjaman_non_rutin.status !=','pending');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
-		$this->db->where('ruangan.username', $akses);
+		$this->db->where('penyelenggara.status', '1');
 		if($status != null){
 			$this->db->where('peminjaman_non_rutin.status', $status);
+		}
+		if($search != null){
+			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
+			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
+			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
+			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
+				$mulai = explode("-", $search);
+				$tahun = $mulai[2];
+				$bulan = $mulai[1];
+				$tanggal = $mulai[0];
+				$tgl = $tahun."-".$bulan."-".$tanggal;
+				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
+				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
+			} 
 		}
 		$this->db->distinct();
 		$query = $this->db->get('peminjaman_non_rutin');
 		return 	$query->num_rows();	
 	}
 
-
-	/*function get_all_data_peminjaman_non_rutin(){
-		$this->db->select('*');
-		$this->db->from('peminjaman_non_rutin');	
-		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
-		$this->db->where('status','terkirim');
-		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
-		$this->db->distinct();
-		$query = $this->db->get();
-		return $query->result();
-	}*/
 
 	function get_all_data_peminjaman_barang(){
 		$this->db->select('*');
@@ -197,17 +264,30 @@ class Mvalidator extends CI_Model{
 		$query = $this->db->get();
 		return $query->result();
 	}
-
-	/* function get_all_data_peminjaman_non_rutin_by_status($status){
+	
+	function catatan_penolakan(){
+		
+		$this->db->select('*');
+		$this->db->from('peminjaman_non_rutin');
+		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
+		//$this->db->where('status', $status);
+		$this->db->order_by("peminjaman.tanggal_peminjaman", "DESC");
+		$query = $this->db->get();
+		return $query->result();
+	}
+//alvin
+	function get_all_data_peminjaman_non_rutin_by_status_wakadek($status){
 		$this->db->select('*');
 		$this->db->from('peminjaman_non_rutin');	
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
+		$this->db->join('penyelenggara', 'penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
-		$this->db->where('peminjaman_non_rutin.status', $status);
+		$this->db->where('penyelenggara.status', '1');
+		$this->db->where('peminjaman_non_rutin.status_wakadek', $status);
 		$this->db->distinct();
 		$query = $this->db->get();
 		return $query->result();
-	} */
+	} 
 	
 	//alvin
 	function get_all_data_peminjaman_non_rutin_by_status($status,$akses){
@@ -216,6 +296,20 @@ class Mvalidator extends CI_Model{
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
 		$this->db->join('detail_peminjaman_non_rutin', 'peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
+		$this->db->where('ruangan.username', $akses);
+		$this->db->where('peminjaman_non_rutin.status', $status);
+		$this->db->distinct();
+		$query = $this->db->get();
+		return $query->result();
+	}
+	function get_all_data_peminjaman_nonnn($status,$akses){
+		$this->db->select('peminjaman_non_rutin.*', 'ruangan.username' );
+		$this->db->from('peminjaman_non_rutin');	
+		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
+		$this->db->join('detail_peminjaman_non_rutin', 'peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
+		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->join('penyelenggara', 'penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
 		$this->db->where('ruangan.username', $akses);
 		$this->db->where('peminjaman_non_rutin.status', $status);
@@ -255,25 +349,38 @@ class Mvalidator extends CI_Model{
 		return $query->result();
 	}
 
-	/*function get_ruangan_detail_non_rutin(){
+	function get_ruangan_detail_non_rutin_wakadek(){
 		$this->db->select('ruangan.ruangan, ruangan.id_ruangan, detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->from('detail_peminjaman_non_rutin');
 		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
 		$this->db->distinct();
 		$query=$this->db->get();
 		return $query->result();
-	}*/
+	}
 	
 	//alvin
 	function get_ruangan_detail_non_rutin($akses){
-		$this->db->select('ruangan.ruangan, ruangan.id_ruangan, detail_peminjaman_non_rutin.id_peminjaman_non_rutin, ruangan.username');
+		$this->db->select('*');
 		$this->db->from('detail_peminjaman_non_rutin');
 		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->join('peminjaman_non_rutin', 'detail_peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->where('ruangan.username', $akses);
 		$this->db->distinct();
 		$query=$this->db->get();
 		return $query->result();
 	}
+	
+	function ruangan_pemakaian(){
+		$this->db->select('*');
+		$this->db->from('detail_peminjaman_non_rutin');
+		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->join('peminjaman_non_rutin', 'detail_peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman_non_rutin.id_peminjaman_non_rutin');
+		//$this->db->where('ruangan.username', $akses);
+		$this->db->distinct();
+		$query=$this->db->get();
+		return $query->result();
+	}
+	
 	function get_ruangan_detail_barang(){
 		$this->db->select('barang.nama_barang, barang.id_barang, detail_peminjaman_barang.id_peminjaman_barang');
 		$this->db->from('detail_peminjaman_barang');
@@ -339,6 +446,49 @@ class Mvalidator extends CI_Model{
 			$query = $this->db->get();
 			return $query->result();
 	}
-   
-    
+	   
+	function get_data_history_peminjam(){
+		$username=$this->session->userdata('username');
+		$this->db->select('*');
+		$this->db->from('peminjaman');
+		$this->db->where('id_peminjam',$username);
+		$this->db->order_by("peminjaman.tanggal_peminjaman", "DESC");
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_ruangan_peminjaman_rutin_by_peminjam(){
+		$username=$this->session->userdata('username');
+		$this->db->select('peminjaman_rutin.id_ruangan, ruangan.ruangan, peminjaman_rutin.id_peminjaman_rutin,peminjaman_rutin.nip_validator');
+		$this->db->from('peminjaman_rutin');
+		$this->db->join('ruangan', 'peminjaman_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->where('peminjaman_rutin.id_peminjam',$username);
+		$query=$this->db->get();
+		return $query->result();
+	}
+	
+	function get_barang_peminjaman_barang_by_peminjam(){
+		$username=$this->session->userdata('username');
+		$this->db->select('barang.nama_barang, detail_peminjaman_barang.id_peminjaman_barang, peminjaman_barang.nip_validator');
+		$this->db->from('detail_peminjaman_barang');
+		$this->db->join('peminjaman_barang','peminjaman_barang.id_peminjaman_barang = detail_peminjaman_barang.id_peminjaman_barang');
+		$this->db->join('barang', 'detail_peminjaman_barang.id_barang = barang.id_barang');
+		$this->db->where('detail_peminjaman_barang.id_peminjam',$username);
+		$this->db->distinct();
+		$query=$this->db->get();
+		return $query->result();
+	}
+	
+	function get_non_rutin_peminjaman_non_rutin_by_peminjam(){
+		$username=$this->session->userdata('username');
+		$this->db->select('ruangan.ruangan, detail_peminjaman_non_rutin.id_peminjaman_non_rutin, peminjaman_non_rutin.nip_validator');
+		$this->db->from('detail_peminjaman_non_rutin');
+		$this->db->join('peminjaman_non_rutin','peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
+		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		$this->db->where('detail_peminjaman_non_rutin.id_peminjam',$username);
+		$this->db->distinct();
+		$query=$this->db->get();
+		return $query->result();
+
+	}
 }

@@ -58,14 +58,7 @@
                                 <option value="<?php echo $u->nim ?>"> <?php echo $u->nim ?> <?php echo $u->nama ?></option>
                                 <?php } ?>
                                 </datalist>
-						   <label for="feInputAddress">Nama</label>
-                             <input required list="nama" name="nama" type="text"  class="form-control" id="feInputAddress" placeholder="Ketik Nama"> 
-							<datalist id = "nama">
-                                
-								<?php foreach($mahasiswa as $u){ ?>
-                                <option value="<?php echo $u->nama ?>"> <?php echo $u->nim ?> <?php echo $u->nama ?></option>
-                                <?php } ?>
-                            </datalist>
+						   
 						   <label for="feInputAddress">Jurusan</label>
 						   <select required  name="id_jurusan" id="feInputState" class="form-control">
                                     <option value="" selected>Pilih </option>

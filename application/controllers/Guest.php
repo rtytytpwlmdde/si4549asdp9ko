@@ -198,8 +198,8 @@ class Guest extends CI_Controller{
 		$data['main_view'] = 'guest/v_list_agenda';
 		$data['agenda'] = $this->m_admin->get_data_agenda_umum($date);
 		$data['ruangan_agenda'] = $this->m_admin->get_data_ruangan_agenda($date);
-		$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
 		$data['ruangan'] = $this->m_admin->tampilRuangan()->result();
+		$data['penyelenggara']= $this->m_admin->tampilPenyelenggara()->result();
 		$data['date'] = $this->m_jadwal->get_last_date();
 		$this->load->view('template/template_guest',$data);	
 	}

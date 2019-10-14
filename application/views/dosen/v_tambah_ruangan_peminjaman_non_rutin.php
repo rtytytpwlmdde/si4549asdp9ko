@@ -24,7 +24,7 @@
     <div class="col-12 col-sm-6 text-center text-sm-left mb-4 mb-sm-0">
     <div class="  text-center text-sm-right mb-0"><br>
         <?php foreach ($peminjaman_non_rutin as $a){ ?>
-        <a  class="mb-2 btn btn-sm btn-outline-primary mr-1" style="max-width:100px" href="<?php echo base_url('Pdfs/save_pdf_peminjaman/'.$a->id_peminjaman_non_rutin.'/non_rutin') ?>"> <i class="material-icons">print</i> Print </a>   
+        <a hidden  class="mb-2 btn btn-sm btn-outline-primary mr-1" style="max-width:100px" href="<?php echo base_url('Pdfs/save_pdf_peminjaman/'.$a->id_peminjaman_non_rutin.'/non_rutin') ?>"> <i class="material-icons">print</i> Print </a>   
         <?php } ?>
         </div>
     </div>

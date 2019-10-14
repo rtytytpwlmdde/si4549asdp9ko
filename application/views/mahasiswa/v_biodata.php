@@ -49,7 +49,8 @@
                             <div class="form-group">
                               <label for="feInputAddress">Nama</label>
                               <input disabled pattern="[^'\x11]+" required  name="nama" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->nama ?>"> 
-                            </div>
+								<input hidden pattern="[^'\x11]+" required  name="nama" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->nama ?>"> 
+							</div>
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                 <label for="feInputAddress">Jurusan</label>
@@ -63,10 +64,30 @@
                                         </option>
                                     <?php endforeach; ?>
                                 </select>
+								 <select hidden required  name="id_jurusan" id="feInputState" class="form-control">
+                                    <?php foreach ($jurusan as $a) : ?>
+                                        <option value="<?= $a->id_jurusan; ?>"
+                                            <?php if ($u->id_jurusan == $a->id_jurusan) :
+                                                echo "selected=selected";
+                                            endif; ?>>
+                                            <?= $a->jurusan; ?>
+                                        </option>
+                                    <?php endforeach; ?>
+                                </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="feInputAddress">Program Studi</label>
                                         <select disabled required  name="id_prodi" id="feInputState" class="form-control">
+                                        <?php foreach ($prodi as $a) : ?>
+                                        <option value="<?= $a->id_prodi; ?>"
+                                            <?php if ($u->id_prodi == $a->id_prodi) :
+                                                echo "selected=selected";
+                                            endif; ?>>
+                                            <?= $a->prodi; ?>
+                                        </option>
+                                        <?php endforeach; ?>
+                                    </select>
+									 <select hidden required  name="id_prodi" id="feInputState" class="form-control">
                                         <?php foreach ($prodi as $a) : ?>
                                         <option value="<?= $a->id_prodi; ?>"
                                             <?php if ($u->id_prodi == $a->id_prodi) :
@@ -100,6 +121,7 @@
                     <li class="list-group-item p-4">
                       <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk</strong>
                       <span>1. Mahasiswa hanya dapat melakukan edit data pada bagian No Telpon.</span><br>
+					  <span>2. Kode No Telp menggunakan 62.</span><br>
                     </li>
                   </ul>
                 </div>

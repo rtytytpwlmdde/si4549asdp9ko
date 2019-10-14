@@ -78,6 +78,7 @@
                         <th scope="col" class="">Jenis</th>
                         <th scope="col" class="">Sarana</th>
                         <th scope="col" class="">Status</th>
+                        <th scope="col" class="">Status Wakil Dekan</th>
                         <th scope="col" class="">Catatan</th>
 						<th scope="col" class="">Nama Validasi</th>
                         <th scope="col" class="">Batalkan</th>
@@ -91,7 +92,7 @@
                     <tr>
                         <td><?php echo $no++ ?></td>
                         <td><a href="<?php echo base_url(). 'mahasiswa/detail_peminjaman/'.$u->id_peminjaman.'/'.$u->jenis_peminjaman; ?>"><?php echo $u->id_peminjaman ?></a></td>
-                       
+						
                         <td><?php echo date("d-m-Y", strtotime($u->tanggal_peminjaman));?></td>
                         <td> <span 
                                 <?php if($u->jenis_peminjaman == 'rutin'){ ?>
@@ -143,7 +144,24 @@
                                 <?php } else{ ?>
                                     class="text-secondary"
                                 <?php } ?>
-                            ><?php echo $u->status_peminjaman ?></span>
+                            ><?php 
+								echo $u->status_peminjaman;
+							?></span>
+                        </td>
+						<td>
+                            <span 
+                                <?php if($u->status_peminjaman_wakadek == 'terkirim'){ ?>
+                                    class="text-warning"
+                                <?php }else if($u->status_peminjaman_wakadek == 'tolak'){ ?>
+                                    class="text-danger"
+                                <?php }else if($u->status_peminjaman_wakadek == 'setuju'){ ?>
+                                    class="text-success"
+                                <?php } else{ ?>
+                                    class="text-secondary"
+                                <?php } ?>
+                            ><?php 
+								echo $u->status_peminjaman_wakadek;
+							?></span>
                         </td>
                         <td>
                             <?php 
@@ -185,7 +203,7 @@
                             </a>
                             <?php }else{ ?>
 
-                            <a href="<?php echo site_url('dosen/batal_peminjaman/'.$u->id_peminjaman.'/'.$u->id_peminjam); ?>"  class="mb-2 btn btn-sm btn-outline-warning mr-1" onclick="return batal();" title="Batalkan Peminjaman">
+                            <a href="<?php echo site_url('mahasiswa/batal_peminjaman/'.$u->id_peminjaman.'/'.$u->id_peminjam); ?>"  class="mb-2 btn btn-sm btn-outline-warning mr-1" onclick="return batal();" title="Batalkan Peminjaman">
                                 <i class="material-icons">cancel</i>
                             </a>
                             <?php }

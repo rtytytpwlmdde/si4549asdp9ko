@@ -110,6 +110,9 @@
                   <a class="dropdown-item " href="<?php echo base_url('operator/penyelenggara'); ?>">Penyelenggara</a>
                   <a class="dropdown-item " href="<?php echo base_url('operator/jenis_barang'); ?>">Jenis Barang</a>
                   <a class="dropdown-item " href="<?php echo base_url('operator/barang'); ?>">Sarana Prasarana</a>
+				  <a class="dropdown-item " href="<?php echo base_url('operator/lihat_jurusan'); ?>">Data Jurusan</a>
+                  <a class="dropdown-item " href="<?php echo base_url('operator/lihat_prodi'); ?>">Data Prodi</a>
+                </div>
                 </div>
               </li>
 				<li class="nav-item">

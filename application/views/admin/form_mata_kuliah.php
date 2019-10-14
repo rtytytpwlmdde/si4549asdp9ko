@@ -32,7 +32,7 @@
                             </div>
                             <div class="row no-gutters p-2">
                             <div class="col-lg-3 mb-2 mb-lg-0">
-                                <form method="post" action="<?php echo base_url("index.php/Import_ruangan/form"); ?>" enctype="multipart/form-data">
+                                <form method="post" action="<?php echo base_url("index.php/Import_mata_kuliah/form"); ?>" enctype="multipart/form-data">
                                 <div class="input-group input-group-seamless">
                                     <input type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" class="form-control form-control-sm file-manager-cards__search" placeholder="Search files">
                                 </div>

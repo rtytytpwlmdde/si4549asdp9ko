@@ -6,7 +6,7 @@
                     </div>
                     <div class="col-12 col-sm-6 text-center text-sm-left mb-4 mb-sm-0">
                     <form action="<?php echo site_url('dosen/filter_surat');?>"  method="get" style="float:right" >
-                    <div hidden id="transaction-history-date-range" class="input-daterange input-group  input-group-sm ml-auto">
+					<div hidden id="transaction-history-date-range" class="input-daterange input-group  input-group-sm ml-auto">
                       <select  name="bln1" class="custom-select custom-select-sm" style="min-width: 200px;">
                         <option value="1" selected>Filter Berdasarkan</option>
                         <option value="2">Hari</option>
@@ -40,7 +40,8 @@
                    
                     <form action="<?php echo site_url('dosen/filter_peta_ruangan_non_rutin');?>"  method="get" style="float:right" >
                     <div id="transaction-history-date-range" class="input-daterange input-group  input-group-sm ml-auto">
-                      
+                      <input id="search_inp" class="input-sm form-control"  placeholder="Search"  type="text">
+                   
                       <input  hidden type="text" id="myInput" onkeyup="myFunction()" placeholder="Search for names.." title="Type in a name" >
                       <input  name="date" type="date" class="custom-select custom-select-sm" style="min-width: 200px;">
                         <button  type="submit" class="input-group-append form-control btn btn-white" style="max-width: 40px;">
@@ -65,7 +66,7 @@
                         <strong class="text-white">Perhatian! Untuk melakukan peminjman sarana prasarana, silahkan klik menu peminjaman pada menu navigasi </strong>    <br>
                     </div>
                         <div class=" p-0 pb-3 text-left" style="overflow-x:auto; ">
-                        <table class="table table-bordered" >
+                        <table class="table table-bordered" id="pegawai">
                             <thead class="bg-light">
                                 <tr>
                                         <th>R/J</th>
@@ -192,5 +193,35 @@
   }
   }
 
+</script>
+
+	 <script type="text/javascript">
+var table = $('#pegawai').DataTable({
+        lengthMenu: [
+            [10, 25, 50, 100, 200, -1],
+            [10, 25, 50, 100, 200, "All"]
+        ],
+        responsive: true,
+        paging: false,
+        stateSave: true,
+        processing: true,        
+        
+        scrollCollapse: true,
+        dom: 'frtip<"clear">l',
+    "columnDefs": [{
+      className: "dt-right",
+    }],
+        
+
+    });
+    
+    
+    $('#search_inp').keyup(function(){
+    table.search($(this).val()).draw() ;
+    })
+    $('#data_length').on('change', function(){
+    table.page.len( $(this).val() ).draw();
+    
+});
 </script>
 

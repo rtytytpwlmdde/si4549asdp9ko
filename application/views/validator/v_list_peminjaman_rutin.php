@@ -37,8 +37,17 @@
             </div>
             </div>
         </div>
+		<div class="row py-1">
+		<div class="col  text-center text-sm-right mb-0">
+                <div id="export"></div>
+            </div>
+		</div>
         <div class="">
+		
+		<a type="button" class="btn btn-sm btn-primary" href="<?php echo site_url('validator/excelrutin') ?>"><i class="fa fa-print"></i> Print</a>
+       
         <div class="row border-bottom  py-1">
+		  
             <div class="col-sm-3 text-center text-sm-left mb-0">
                 <input id="search_inp" class="input-sm form-control"  placeholder="Search"  type="text" >
             </div>
@@ -142,7 +151,7 @@
 																			%0ARuangan%20%3A <?php foreach ($ruangan as $a){if ($a->id_ruangan == $u->id_ruangan) :echo $a->ruangan;endif;} ?>
 																			%0AJam%20%3A <?php foreach ($jam_kuliah as $a){if ($a->id_jam_kuliah == $u->id_jam_kuliah) :echo $a->jam_kuliah;endif;}  ?>
 																			%0ATanggal%20%3A <?php echo date("d-m-Y", strtotime($u->tanggal_pemakaian));?>
-																			%0ACatatan Penolakan%20%3A
+																			%0ACatatan Penolakan%20%3A   <?php echo $u->catatan_penolakan ?>
 																			%0A%0APengirim%0AAdmin Manajemen Ruangan
 																			"   class="btn btn-danger text-white" target="#_blank" title="Tolak Peminjaman">
                                     <i class="material-icons">close</i>
@@ -297,8 +306,7 @@
  
 
 
-
-          <script type="text/javascript">
+<script type="text/javascript">
 
 
 var table = $('#pegawai').DataTable({
@@ -312,16 +320,182 @@ var table = $('#pegawai').DataTable({
         processing: true,        
         
         scrollCollapse: true,
-        dom: 'frtip<"clear">l',
+        dom: 'fBrtip<"clear">l',
     "columnDefs": [{
       className: "dt-right",
+      "targets": [0] // First column
     }],
-        
+        buttons: [
+            {
+                extend: 'copyHtml5',
+                text: '<i class="fa fa-files-o"></i>',
+                titleAttr: 'Copy',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'pdfHtml5',
+                text: '<i class="fa fa-file-pdf-o"></i>',
+                titleAttr: 'PDF',
+                extension: ".pdf",
+                filename: "User",
+                title: "",
+                orientation: 'landscape',
+                customize: function (doc) {
+
+                    doc.styles.tableHeader = {
+                        color: 'black',
+                        background: 'grey',
+                        alignment: 'center'
+                    }
+
+                    doc.styles = {
+                        subheader: {
+                            fontSize: 10,
+                            bold: true,
+                            color: 'black'
+                        },
+                        tableHeader: {
+                            bold: true,
+                            fontSize: 10.5,
+                            color: 'black'
+                        },
+                        lastLine: {
+                            bold: true,
+                            fontSize: 11,
+                            color: 'blue'
+                        },
+                        defaultStyle: {
+                            fontSize: 10,
+                            color: 'black'
+                        }
+                    }
+
+                    var objLayout = {};
+                    objLayout['hLineWidth'] = function(i) { return .8; };
+                    objLayout['vLineWidth'] = function(i) { return .5; };
+                    objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                    objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                    objLayout['paddingLeft'] = function(i) { return 8; };
+                    objLayout['paddingRight'] = function(i) { return 8; };
+                    doc.content[0].layout = objLayout;
+
+                    // margin: [left, top, right, bottom]
+
+                    doc.content.splice(0, 0, {
+                        text: [
+                            {text: 'Texto 0', italics: true, fontSize: 12}
+                        ],
+                        margin: [0, 0, 0, 12],
+                        alignment: 'center'
+                    });
+
+                    doc.content.splice(0, 0, {
+
+                        table: {
+                            widths: [300, '*', '*'],
+                            body: [
+                                [
+                                    {text: 'Texto 1', bold: true, fontSize: 10}
+                                    , {text: 'Texto 2', bold: true, fontSize: 10}
+                                    , {text: 'Texto 3', bold: true, fontSize: 10}]
+                            ]
+                        },
+
+                        margin: [0, 0, 0, 12],
+                        alignment: 'center'
+                    });
+
+
+                    doc.content.splice(0, 0, {
+
+                        table: {
+                            widths: [300, '*'],
+                            body: [
+                                [
+                                    {
+                                        text: [
+                                            {text: 'Texto 4', fontSize: 10},
+                                            {
+                                                text: 'Texto 5',
+                                                bold: true,
+                                                fontSize: 10
+                                            }
+
+                                        ]
+                                    }
+                                    , {
+                                    text: [
+                                        {
+                                            text: 'Texto 6',
+                                            bold: true, fontSize: 18
+                                        },
+                                        {
+                                            text: 'Texto 7',
+                                            fontSize: 10
+                                        }
+
+                                    ]
+                                }]
+                            ]
+                        },
+
+                        margin: [0, 0, 0, 22],
+                        alignment: 'center'
+                    });
+
+
+                },
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'excelHtml5',
+                text: '<i class="fa fa-file-excel-o"></i>',
+                titleAttr: 'Excel',
+                fieldSeparator: ';',
+                filename: "User",
+                fieldBoundary: '"',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+            {
+                extend: 'csvHtml5',
+                text: '<i class="fa fa-file-code-o"></i>',
+                titleAttr: 'CSV',
+                fieldSeparator: ';',
+                fieldBoundary: '"',
+                exportOptions: {
+                    columns: ':visible'
+                }
+            },
+
+            {
+                extend: 'print',
+                text: '<i class="fa fa-print"></i>',
+                titleAttr: 'Print',
+                exportOptions: {
+                    columns: ':visible',
+                }
+            },
+
+            {
+                extend: 'colvis',
+                postfixButtons: ['colvisRestore'],
+                collectionLayout: 'fixed four-column'
+            }
+
+        ]
 
     });
     
     
+    $('.dt-button').addClass('btn btn-sm btn-outline-primary mr-1 rounded  text-center p-1');
     $('.dataTables_paginate').addClass('btn rounded text-white text-center p-1');
+    $(".dt-button").prependTo("#export"); 
     $('#search_inp').keyup(function(){
     table.search($(this).val()).draw() ;
     })
@@ -342,6 +516,8 @@ function deletechecked()
         } 
    }
 </script>
+
+
 
 <?php 
    

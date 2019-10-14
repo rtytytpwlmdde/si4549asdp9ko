@@ -93,8 +93,9 @@
                 <thead role="row" class="py-2 bg-light text-semibold border-bottom">
                 <tr>
                     <th scope="col" class="">No</th>
-                    <th scope="col" class="">Hari </th>
-                    <th scope="col" class="">Tanggal </th>
+                    <th scope="col" class="">Tanggal Pemijaman</th>
+					<th scope="col" class="">Hari Penggunaan </th>
+                    <th scope="col" class="">Tanggal Penggunaan </th>
                     <th scope="col" class="">Jam</th>
                     <th scope="col" class="">Mata Kuliah</th>
                     <th scope="col" class="">Ruangan</th>
@@ -111,18 +112,18 @@
                     ?>
                 <tr>
                     <td><?php echo $no++ ?></td>
+					<td><?php echo date("d-m-Y", strtotime($u->tanggal_peminjaman));?></td>
                     <td><?php  
-                    $hari = array (1 => 'Senin',
-                    2 => 'Selasa',
-                    3 => 'Rabu',
-                    4 => 'Kamis',
-                    5=>'Jumat',
-                    6=>'Sabtu',
-                    7=>'Minggu'
-                    );
-                    echo $hari[date('N')];
-                    
-                    ?></td>
+                            $date = $u->tanggal_pemakaian;
+                            $hari =  date("l", strtotime($date));
+                            if($hari == 'Monday'){echo 'Senin';}
+                            else if($hari == 'Tuesday'){echo 'Selasa ';}
+                            else if($hari == 'Wednesday'){echo 'Rabu ';}
+                            else if($hari == 'Thursday'){echo 'Kamis ';}
+                            else if($hari == 'Friday'){echo 'Jumat';}
+                            else if($hari == 'Saturday'){echo 'Sabtu ';}
+                            else if($hari == 'Sunday'){echo 'Minggu ';}
+                          ?></td>
                     <td><?php echo date("d-m-Y", strtotime($u->tanggal_pemakaian));?></td>
                     <td><?php foreach ($jam_kuliah as $a){if ($a->id_jam_kuliah == $u->id_jam_kuliah) :echo $a->jam_kuliah;endif;}  ?></td>
                     <td><?php foreach ($mata_kuliah as $a){if ($a->kode_matkul == $u->kode_matkul) :echo $a->nama_matkul;endif;}  ?></td>

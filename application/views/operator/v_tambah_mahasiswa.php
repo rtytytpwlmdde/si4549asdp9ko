@@ -51,20 +51,17 @@
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                 <label for="feInputAddress">Jurusan</label>
-                                    <select required  name="id_jurusan" id="feInputState" class="form-control">
+                                    <select required  name="id_jurusan" id="id_jurusan" class="form-control">
                                     <option value="" selected>Pilih </option>
                                     <?php foreach($jurusan as $u ){ ?>
                                     <option value="<?php echo $u->id_jurusan;?>"><?php echo $u->jurusan;     ?></option> 
                                     <?php } ?>
-                                </select>
+							   </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="feInputAddress">Program Studi</label>
                                         <select required  name="id_prodi" id="feInputState" class="form-control">
-                                        <option value="" selected>Pilih </option>
-                                        <?php foreach($prodi as $u ){ ?>
-                                        <option value="<?php echo $u->id_prodi;?>"><?php echo $u->prodi;     ?></option> 
-                                        <?php } ?>
+										<option value="" selected>Pilih </option>
                                     </select>
                                 </div>
                             </div>
@@ -88,11 +85,35 @@
                     <li class="list-group-item p-4">
                       <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk</strong>
                       <span>1. Password pegawai baru akan diambil berdasarkan 6 terakhir dari NIM.</span><br>
+					  <span>2. No Telpon menggunakan 62</span>
                     </li>
                   </ul>
                 </div>
               </div>
             </div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#id_jurusan').change(function(){
+			var id=$(this).val();
+			$.ajax({
+				url : "<?php echo base_url();?>/mahasiswa/get_subkategori",
+				method : "POST",
+				data : {id: id},
+				async : false,
+		        dataType : 'json',
+				success: function(data){
+					var html = '';
+		            var i;
+		            for(i=0; i<data.length; i++){
+		                html += '<option value='+data[i].id_prodi+'>'+data[i].prodi+'</option>';
+		            }
+		            $('.id_prodi').html(html);
+					
+				}
+			});
+		});
+	});
+</script>
 </div>
     
 

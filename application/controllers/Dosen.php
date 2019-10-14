@@ -24,6 +24,13 @@ class Dosen extends CI_Controller{
 		redirect('dosen/peta_jadwal_kuliah/');
 	}
 
+		public function get_prodi_by_jurusan_js(){
+      if($this->input->post('id_jurusan'))
+      {
+      echo $this->m_admin->get_prodi_by_jurusan_js($this->input->post('id_jurusan'));
+      }
+    }
+
 	function peta_jadwal_kuliah(){
 		$date = date("Y-m-d");
 		$day = date('l', strtotime($date));
@@ -1080,6 +1087,15 @@ class Dosen extends CI_Controller{
 		$jabatan = $this->input->post('jabatan');
 		$stat = $this->input->post('stat');
 		
+		if(!preg_match('/[^+0-9]/',trim($No_Telp))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($No_Telp), 0, 2)=='62'){
+            $hp = trim($No_Telp);
+		} // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($No_Telp), 0, 1)=='0'){
+            $hp = '62'.substr(trim($No_Telp), 1);
+        }
+		}
 		
 		$data = array(
 			'Nama' => $Nama,
@@ -1090,7 +1106,7 @@ class Dosen extends CI_Controller{
 			'Urusan' => $Urusan,
 			'stat' => $stat,
 			'jabatan' => $jabatan,
-			'No_Telp' => $No_Telp
+			'No_Telp' => $hp
 			
 		
 		);

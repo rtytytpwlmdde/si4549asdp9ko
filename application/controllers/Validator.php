@@ -238,16 +238,15 @@ class Validator extends CI_Controller{
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
 		$data['jadwal_kuliah'] = $this->m_admin->tampilJadwalKuliahToDay($day);
-		$data['peminjaman_rutin'] = $this->m_admin->tampilPeminjamanRutinToDay($date);
-		$data['peminjaman_non_rutin'] = $this->m_admin->tampilPeminjamanNonRutinToDay($date);
+		$data['peminjaman_rutin'] = $this->m_mahasiswa->tampilPeminjamanRutinToDay($date);
+		$data['peminjaman_non_rutin'] = $this->m_mahasiswa->tampilPeminjamanNonRutinToDay($date);
 		$data['dosen'] = $this->m_admin->get_data_dosen();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
-		$data['tanggal'] = $this->m_admin->get_data_tanggal_plot($date);
-		$data['semester'] = $this->m_admin->semester_akhir();
 		$data['tanggal'] = $date;
 		$data['status_jadwal'] = $result;
+		$data['semester'] = $this->m_admin->semester_akhir();
 		$this->load->view('template/template_validator',$data);
 	}
 
@@ -306,55 +305,116 @@ class Validator extends CI_Controller{
 	}
 	//alvin
 	function peminjaman_non_rutin(){
-		$jumlah_data = $this->Mvalidator->jumlah_data();
-		$data['search'] = $this->input->post('search');
-		$data['peminjaman'] = $this->Mvalidator->get_data_peminjaman();
 		$akses = $this->session->userdata('username'); //alvin
-		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
-		$data['dosen'] = $this->m_admin->get_data_dosen();
-		$data['pegawai'] = $this->m_admin->get_data_user();
-		$data['ruangan'] = $this->m_admin->get_data_ruangan_bagus();
-		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
-		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
-		$data['prodi'] = $this->m_admin->tampilProdi()->result();
-		$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
-		$data['pegawaiTelp']=$this->Mvalidator->get_telp_pegawai();
-		$data['mahasiswaTelp']=$this->Mvalidator->get_telp_mahasiswa();
-		$data['ruangan_non_rutin'] = $this->Mvalidator->get_ruangan_detail_non_rutin($akses);
+		if($akses == "wakadek"){
+			$jumlah_data = $this->Mvalidator->jumlah_data_wakadek();
+			$this->load->library('pagination');
+			$config['base_url'] = base_url().'/validator/peminjaman_non_rutin/';
+			$config['total_rows'] = $jumlah_data;
+			$config['per_page'] = 10;
+			$data['main_view'] = 'validator/v_list_peminjaman_non_rutin_wakadek';
+			$data['peminjaman'] = $this->Mvalidator->get_data_peminjaman();
+			$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
+			$data['dosen'] = $this->m_admin->get_data_dosen();
+			$data['pegawai'] = $this->m_admin->get_data_user();
+			$data['search'] = $this->input->post('search');
+			$data['ruangan'] = $this->m_admin->get_data_ruangan_bagus();
+			$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
+			$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+			$data['prodi'] = $this->m_admin->tampilProdi()->result();
+			$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
+			$data['pegawaiTelp']=$this->Mvalidator->get_telp_pegawai();
+			$data['mahasiswaTelp']=$this->Mvalidator->get_telp_mahasiswa();
+			$data['catatan']=$this->Mvalidator->catatan_penolakan();
+			$data['ruangan_non_rutin'] = $this->Mvalidator->get_ruangan_detail_non_rutin_wakadek();
+			$config['first_link']       = 'First';
+			$config['last_link']        = 'Last';
+			$config['next_link']        = 'Next';
+			$config['prev_link']        = 'Prev';
+			$config['full_tag_open']    = '<div class="pagging text-left"><nav><ul class="pagination justify-content-right">';
+			$config['full_tag_close']   = '</ul></nav></div>';
+			$config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
+			$config['num_tag_close']    = '</span></li>';
+			$config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
+			$config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
+			$config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
+			$config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
+			$config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
+			$config['prev_tagl_close']  = '</span>Next</li>';
+			$config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
+			$config['first_tagl_close'] = '</span></li>';
+			$config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
+			$config['last_tagl_close']  = '</span></li>';
+			$from = $this->uri->segment(3);
+			$this->pagination->initialize($config);	
+			$data['peminjaman_non_rutin'] = $this->Mvalidator->get_all_data_peminjaman_non_rutin_wakadek($config['per_page'],$from);
+		}else{
+			$this->load->library('pagination');
+			$jumlah_data = $this->Mvalidator->jumlah_data();
+			$config['base_url'] = base_url().'/validator/peminjaman_non_rutin/';
+			$config['total_rows'] = $jumlah_data;
+			$config['per_page'] = 10;
+			$data['main_view'] = 'validator/v_list_peminjaman_non_rutin';
+			$data['peminjaman'] = $this->Mvalidator->get_data_peminjaman();
+			$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
+			$data['dosen'] = $this->m_admin->get_data_dosen();
+			$data['pegawai'] = $this->m_admin->get_data_user();
+			$data['ruangan'] = $this->m_admin->get_data_ruangan_bagus();
+			$data['search'] = $this->input->post('search');
+			$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
+			$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+			$data['prodi'] = $this->m_admin->tampilProdi()->result();
+			$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
+			$data['pegawaiTelp']=$this->Mvalidator->get_telp_pegawai();
+			$data['mahasiswaTelp']=$this->Mvalidator->get_telp_mahasiswa();
+			$data['catatan']=$this->Mvalidator->catatan_penolakan();
+			$data['ruangan_pemakaian']=$this->Mvalidator->ruangan_pemakaian();
+			$data['ruangan_non_rutin'] = $this->Mvalidator->get_ruangan_detail_non_rutin($akses);
 
-		$this->load->library('pagination');
-		$config['base_url'] = base_url().'/validator/peminjaman_non_rutin/';
-		$config['total_rows'] = $jumlah_data;
-		$config['per_page'] = 10;
-		$config['first_link']       = 'First';
-        $config['last_link']        = 'Last';
-        $config['next_link']        = 'Next';
-        $config['prev_link']        = 'Prev';
-        $config['full_tag_open']    = '<div class="pagging text-left"><nav><ul class="pagination justify-content-right">';
-        $config['full_tag_close']   = '</ul></nav></div>';
-        $config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
-        $config['num_tag_close']    = '</span></li>';
-        $config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
-        $config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
-        $config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
-        $config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['prev_tagl_close']  = '</span>Next</li>';
-        $config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
-        $config['first_tagl_close'] = '</span></li>';
-        $config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
-        $config['last_tagl_close']  = '</span></li>';
-		$from = $this->uri->segment(3);
-		$this->pagination->initialize($config);	
-		$data['peminjaman_non_rutin'] = $this->Mvalidator->get_all_data_peminjaman_non_rutin($config['per_page'],$from);
-
-
-		$data['main_view'] = 'validator/v_list_peminjaman_non_rutin';
+			$config['first_link']       = 'First';
+			$config['last_link']        = 'Last';
+			$config['next_link']        = 'Next';
+			$config['prev_link']        = 'Prev';
+			$config['full_tag_open']    = '<div class="pagging text-left"><nav><ul class="pagination justify-content-right">';
+			$config['full_tag_close']   = '</ul></nav></div>';
+			$config['num_tag_open']     = '<li class="page-item"><span class="page-link">';
+			$config['num_tag_close']    = '</span></li>';
+			$config['cur_tag_open']     = '<li class="page-item active"><span class="page-link">';
+			$config['cur_tag_close']    = '<span class="sr-only">(current)</span></span></li>';
+			$config['next_tag_open']    = '<li class="page-item"><span class="page-link">';
+			$config['next_tagl_close']  = '<span aria-hidden="true">&raquo;</span></span></li>';
+			$config['prev_tag_open']    = '<li class="page-item"><span class="page-link">';
+			$config['prev_tagl_close']  = '</span>Next</li>';
+			$config['first_tag_open']   = '<li class="page-item"><span class="page-link">';
+			$config['first_tagl_close'] = '</span></li>';
+			$config['last_tag_open']    = '<li class="page-item"><span class="page-link">';
+			$config['last_tagl_close']  = '</span></li>';
+			$from = $this->uri->segment(3);
+			$this->pagination->initialize($config);	
+			$data['peminjaman_non_rutin'] = $this->Mvalidator->get_all_data_peminjaman_non_rutin($config['per_page'],$from);
+		}
 		$this->load->view('template/template_validator',$data);
 	}
 	//alvin
 	function peminjaman_non_rutin_filter($status){
 		$akses = $this->session->userdata('username'); //alvin
+		if($akses == "wakadek"){
+		$data['main_view'] = 'validator/v_list_peminjaman_non_rutin_wakadek';
+		$data['peminjaman'] = $this->Mvalidator->get_data_peminjaman();
+		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
+		$data['dosen'] = $this->m_admin->get_data_dosen();
+		$data['pegawai'] = $this->m_admin->get_data_user();
+		$data['ruangan'] = $this->m_admin->get_data_ruangan_bagus();
+		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
+		$data['pegawaiTelp']=$this->Mvalidator->get_telp_pegawai();
+		$data['mahasiswaTelp']=$this->Mvalidator->get_telp_mahasiswa();
+		$data['catatan']=$this->Mvalidator->catatan_penolakan();
+		$data['peminjaman_non_rutin'] = $this->Mvalidator->get_all_data_peminjaman_non_rutin_by_status_wakadek($status);
+		$data['ruangan_non_rutin'] = $this->Mvalidator->get_ruangan_detail_non_rutin_wakadek();
+		}else{
 		$data['main_view'] = 'validator/v_list_peminjaman_non_rutin';
 		$data['peminjaman'] = $this->Mvalidator->get_data_peminjaman();
 		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
@@ -367,8 +427,11 @@ class Validator extends CI_Controller{
 		$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
 		$data['pegawaiTelp']=$this->Mvalidator->get_telp_pegawai();
 		$data['mahasiswaTelp']=$this->Mvalidator->get_telp_mahasiswa();
+		$data['catatan']=$this->Mvalidator->catatan_penolakan();
 		$data['peminjaman_non_rutin'] = $this->Mvalidator->get_all_data_peminjaman_non_rutin_by_status($status, $akses);
-		$data['ruangan_non_rutin'] = $this->Mvalidator->get_ruangan_detail_non_rutin($akses);
+		$data['akses'] = $this->Mvalidator->get_all_data_peminjaman_nonnn($status, $akses);
+		$data['ruangan_non_rutin'] = $this->Mvalidator->get_ruangan_detail_non_rutin($akses);				
+		}		
 		$this->load->view('template/template_validator',$data);
 	}
 
@@ -570,35 +633,53 @@ class Validator extends CI_Controller{
 	function validasi($id_peminjaman,$id_peminjam,$status){
 		$user_login = $this->session->userdata('status');
 		$nama_login = $this->session->userdata('username');
-		$data = array(
-            'status_peminjaman' => $status
-        );
-        $data_rutin = array(
-            'status' => $status
-        );
-		$data_validator= array(
-			'nip_validator' => $nama_login
-		);
+		$n = "";
+		if($nama_login == "wakadek"){
+			$data = array(
+					'status_peminjaman_wakadek' => $status
+				);
+			$data_rutin = 	array(
+											'status_wakadek' => $status
+										);
+			$data_validator= array(
+								'nip_validator' => $n
+							);
+		}else {
+			$data = array(
+					'status_peminjaman' => $status
+				);
+			$data_rutin = 	array(
+											'status' => $status
+										);
+			$data_validator= array(
+								'nip_validator' => $nama_login
+							);
+		}
+        
+		
             
         $where = array('id_peminjaman' => $id_peminjaman);
         $where_rutin = array('id_peminjaman_rutin' => $id_peminjaman);
         $where_non_rutin = array('id_peminjaman_non_rutin' => $id_peminjaman);
         $where_barang = array('id_peminjaman_barang' => $id_peminjaman);
 		//alvin
-		/*$jenis_ruangan = $this->m_admin->ruangan_non_rutin($id_peminjaman);
+		/* $jenis_ruangan = $this->m_admin->ruangan_non_rutin($id_peminjaman);
 		$hari = date('l');
-		if ($hari != "Saturday" OR $hari != "Sunday" and $user_login == 'validator_non_rutin' and $jenis_ruangan == "rutin") {
+		if( $user_login == 'validator_rutin'and ($hari == "Saturday" OR $hari == "Sunday") ){
+			$this->session->set_flashdata('notif', "Harap validasi pada hari kerja!");
+			redirect('validator/peminjaman_rutin/');
+		}else if ($hari != "Saturday" OR $hari != "Sunday" and $user_login == 'validator_non_rutin' and $jenis_ruangan =! "rutin") {
 			$this->session->set_flashdata('notif', "Harap validasi pada hari kerja! non rutin");
 			redirect('validator/peminjaman_non_rutin/');
-		}*/
+		} */
 		
         $this->m_admin->update_data($where,$data,'peminjaman');
         $this->m_admin->update_data($where_rutin,$data_rutin,'peminjaman_rutin');
-		$this->m_admin->update_data($where_rutin,$data_validator,'peminjaman_rutin');
-        $this->m_admin->update_data($where_non_rutin,$data_rutin,'peminjaman_non_rutin');
-		$this->m_admin->update_data($where_non_rutin,$data_validator,'peminjaman_non_rutin');
-        $this->m_admin->update_data($where_barang,$data_rutin,'peminjaman_barang');
-		$this->m_admin->update_data($where_barang,$data_validator,'peminjaman_barang');
+				$this->m_admin->update_data($where_rutin,$data_validator,'peminjaman_rutin');
+				$this->m_admin->update_data($where_non_rutin,$data_validator,'peminjaman_non_rutin');
+				$this->m_admin->update_data($where_barang,$data_validator,'peminjaman_barang');
+		$this->m_admin->update_data($where_non_rutin,$data_rutin,'peminjaman_non_rutin');
+		$this->m_admin->update_data($where_barang,$data_rutin,'peminjaman_barang');
 		$this->session->set_flashdata('notif', "SUKSES! Status peminjaman berhasil diganti menjadi $status");
 		
 		if($user_login == 'validator_rutin'){
@@ -869,53 +950,67 @@ class Validator extends CI_Controller{
 	}
 	
 	
-
+//alvin
 	function tolakPeminjaman(){
-		$username = $this->session->userdata('username');
+		$nama_login = $this->session->userdata('username');
 		$user_login = $this->session->userdata('status');
 		$id_peminjaman = $this->input->post('id_peminjaman');
 		$id_peminjam = $this->input->post('id_peminjam');
 		$catatan_penolakan = $this->input->post('catatan_penolakan');
 		$status = "tolak";
-		if($username == 'TU'){
+		
+		if($nama_login == "wakadek"){
 			$data = array(
-				'id_peminjaman' => $id_peminjaman,
-				'catatan_penolakan' => $catatan_penolakan,
-				'status_peminjaman_wakadek' => $status,
-				'status_peminjaman' => $status
-			);           
-			$data_rutin = array(
-				'id_peminjaman_rutin' => $id_peminjaman, 
-				'status_wakadek' => $status,
-				'status' => $status
-			);              
+							'id_peminjaman' => $id_peminjaman,
+							'catatan_penolakan' => $catatan_penolakan,
+							'status_peminjaman_wakadek' => $status
+						);           
+						
+			 $data_rutin = array(
+							'id_peminjaman_rutin' => $id_peminjaman, 'status_wakadek' => $status
+							);    
+							
 			$data_non_rutin = array(
-				'id_peminjaman_non_rutin' => $id_peminjaman, 
-				'status_wakadek' => $status,
-				'status' => $status
-			);            
+							'id_peminjaman_non_rutin' => $id_peminjaman, 'status_wakadek' => $status
+							); 
+							
 			$data_barang = array(
-				'id_peminjaman_barang' => $id_peminjaman,
-				'status_wakadek' => $status,
-				'status' => $status
-			);
-		}else{
+							'id_peminjaman_barang' => $id_peminjaman,'status_wakadek' => $status
+							); 
+		}else {
 			$data = array(
-				'id_peminjaman' => $id_peminjaman,
-				'catatan_penolakan' => $catatan_penolakan,
-				'status_peminjaman' => $status
-			);           
+							'id_peminjaman' => $id_peminjaman,
+							'catatan_penolakan' => $catatan_penolakan,
+							'status_peminjaman' => $status
+						);           
+						
 			$data_rutin = array(
-				'id_peminjaman_rutin' => $id_peminjaman, 'status' => $status
-			);              
+							'id_peminjaman_rutin' => $id_peminjaman, 'status' => $status, 'status_wakadek' => $status
+							);   
+							
 			$data_non_rutin = array(
-				'id_peminjaman_non_rutin' => $id_peminjaman, 'status' => $status
-			);            
+							'id_peminjaman_non_rutin' => $id_peminjaman, 'status' => $status,
+							'status_wakadek' => $status
+							); 
+							
 			$data_barang = array(
-				'id_peminjaman_barang' => $id_peminjaman,'status' => $status
-			);
+							'id_peminjaman_barang' => $id_peminjaman,'status' => $status,
+							'status_wakadek' => $status
+							);
 		}
+		
+        
 
+		/*
+		$jenis_ruangan = $this->m_admin->ruangan_non_rutin($id_peminjaman);
+		$hari = date('l');
+		if( $user_login == 'validator_rutin'and ($hari == "Saturday" OR $hari == "Sunday") ){
+			$this->session->set_flashdata('notif', "Harap validasi pada hari kerja!");
+			redirect('validator/peminjaman_rutin/');
+		}else if ($hari != "Saturday" OR $hari != "Sunday" and $user_login == 'validator_non_rutin' and $jenis_ruangan =! "rutin") {
+			$this->session->set_flashdata('notif', "Harap validasi pada hari kerja! non rutin");
+			redirect('validator/peminjaman_non_rutin/');
+		}*/
         
         $where = array('id_peminjaman' => $id_peminjaman);
         $where_rutin = array('id_peminjaman_rutin' => $id_peminjaman);
@@ -990,6 +1085,9 @@ class Validator extends CI_Controller{
 				$my_result_object = json_decode(file_get_contents($api_url, false));
 			redirect('validator/peminjaman_rutin/');
 		}else if($user_login == 'validator_non_rutin'){
+				if($nama_login == "wakadek"){
+					redirect('validator/peminjaman_non_rutin/');
+				} else {
 			$api = $this->m_admin->get_data_api_key();
 					foreach ($api as $apii){
 						$my_apikey = $apii['api_key'];			
@@ -1058,6 +1156,7 @@ class Validator extends CI_Controller{
 				$api_url .= "&text=". urlencode ($message); 
 				$my_result_object = json_decode(file_get_contents($api_url, false)); 
 			redirect('validator/peminjaman_non_rutin/');
+				}
 		}else if($user_login == 'validator_barang'){
 			$api = $this->m_admin->get_data_api_key();
 					foreach ($api as $apii){
@@ -2111,16 +2210,24 @@ function get_option_penyelenggara(){
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
 		$data['jadwal_kuliah'] = $this->m_admin->tampilJadwalKuliahToDay($day);
-		$data['peminjaman_rutin'] = $this->m_admin->tampilPeminjamanRutinToDay($date);
-		$data['peminjaman_non_rutin'] = $this->m_admin->tampilPeminjamanNonRutinToDay($date);
+		$data['peminjaman_rutin'] = $this->m_mahasiswa->tampilPeminjamanRutinToDay($date);
+		$data['peminjaman_non_rutin'] = $this->m_mahasiswa->tampilPeminjamanNonRutinToDay($date);
 		$data['dosen'] = $this->m_admin->get_data_dosen();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
-		$data['tanggal'] = $this->m_admin->get_data_tanggal_plot($date);
-		$data['semester'] = $this->m_admin->semester_akhir();
 		$data['tanggal'] = $date;
 		$data['status_jadwal'] = $result;
+		$data['semester'] = $this->m_admin->semester_akhir();
+		$this->load->view('template/template_validator',$data);
+	}
+	
+	function history_peminjaman(){
+		$data['main_view'] = 'validator/v_history_peminjaman';
+		$data['peminjaman'] = $this->Mvalidator->get_data_history_peminjam();
+		$data['peminjaman_rutin'] = $this->Mvalidator->get_ruangan_peminjaman_rutin_by_peminjam();
+		$data['detail_peminjaman_barang'] = $this->Mvalidator->get_barang_peminjaman_barang_by_peminjam();
+		$data['detail_peminjaman_non_rutin'] = $this->Mvalidator->get_non_rutin_peminjaman_non_rutin_by_peminjam();
 		$this->load->view('template/template_validator',$data);
 	}
 

@@ -43,10 +43,12 @@
                             <div class="form-group">
                               <label for="feInputAddress">NIP</label>
                               <input disabled required name="NIP" type="text" pattern="[0-9]{5,25}" title="Gunakan Angka, 5-25 karakter" class="form-control" id="feInputAddress" value="<?php echo $u->NIP ?>"> 
+                              <input hidden required name="NIP" type="text" pattern="[0-9]{5,25}" title="Gunakan Angka, 5-25 karakter" class="form-control" id="feInputAddress" value="<?php echo $u->NIP ?>"> 
                             </div>
                             <div class="form-group">
                               <label for="feInputAddress">Nama</label>
                               <input disabled pattern="[^'\x11]+" required  name="Nama" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->Nama ?>"> 
+                              <input hidden pattern="[^'\x11]+" required  name="Nama" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->Nama ?>"> 
                             </div>
                            
                             <div class="form-row"> 
@@ -56,10 +58,15 @@
                                     <option value="Dosen" <?php echo ($u->Status=='Dosen')?'selected="selected"':''; ?>>Dosen</option>
                                     <option value="Staff" <?php echo ($u->Status=='Staff')?'selected="selected"':''; ?>>Staff</option>
                                     </select>
+									<select hidden required  name="Status" id="feInputState" class="form-control">
+                                    <option value="Dosen" <?php echo ($u->Status=='Dosen')?'selected="selected"':''; ?>>Dosen</option>
+                                    <option value="Staff" <?php echo ($u->Status=='Staff')?'selected="selected"':''; ?>>Staff</option>
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="feInputAddress">Pangkat</label>
                                     <input disabled required pattern="[^'\x11]+" name="Pangkat" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->Pangkat ?>"> 
+                                    <input hidden required pattern="[^'\x11]+" name="Pangkat" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->Pangkat ?>"> 
                                 </div>
                             </div>
                            <div class="form-group">
@@ -69,6 +76,17 @@
                             <div class="form-group">
                               <label for="feInputAddress">Bagian</label>
                               <input disabled required  name="Bagian" type="text" list="Bagian" class="form-control" id="feInputAddress" value="<?php echo $u->Bagian ?>"> 
+                                 <datalist id = "Bagian">
+                                    <?php 
+                                        $arr = array();
+                                        foreach($pegawai as $value){
+                                            $arr[$value->Bagian] = $value->Bagian;
+                                        }
+                                        foreach($arr as $bag){?>
+                                    <option value="<?php echo $bag?>"> <?php echo $bag;?></option>
+                                    <?php  }?>
+                                </datalist>
+								<input hidden required  name="Bagian" type="text" list="Bagian" class="form-control" id="feInputAddress" value="<?php echo $u->Bagian ?>"> 
                                  <datalist id = "Bagian">
                                     <?php 
                                         $arr = array();
@@ -93,10 +111,32 @@
                                     <option value="<?php echo $bag?>"> <?php echo $bag;?></option>
                                     <?php  }?>
                                 </datalist>
+								<input hidden required  name="Sub_Bagian" type="text" list="Sub_Bagian" class="form-control" id="feInputAddress" value="<?php echo $u->Sub_Bagian ?>"> 
+                                <datalist id = "Sub_Bagian">
+                                    <?php 
+                                        $arr = array();
+                                        foreach($pegawai as $value){
+                                            $arr[$value->Sub_Bagian] = $value->Sub_Bagian;
+                                        }
+                                        foreach($arr as $bag){?>
+                                    <option value="<?php echo $bag?>"> <?php echo $bag;?></option>
+                                    <?php  }?>
+                                </datalist>
                             </div>
                             <div class="form-group">
                               <label for="feInputAddress">Urusan</label>
                               <input disabled required  name="Urusan" type="text" list="Urusan" class="form-control" id="feInputAddress" value="<?php echo $u->Urusan ?>"> 
+                                <datalist id = "Urusan">
+                                    <?php 
+                                        $arr = array();
+                                        foreach($pegawai as $value){
+                                            $arr[$value->Urusan] = $value->Urusan;
+                                        }
+                                        foreach($arr as $bag){?>
+                                    <option value="<?php echo $bag?>"> <?php echo $bag;?></option>
+                                    <?php  }?>
+                                </datalist>
+								<input hidden required  name="Urusan" type="text" list="Urusan" class="form-control" id="feInputAddress" value="<?php echo $u->Urusan ?>"> 
                                 <datalist id = "Urusan">
                                     <?php 
                                         $arr = array();
@@ -114,6 +154,10 @@
                                     <option <?php echo ($u->jabatan=='kepala')?'selected="selected"':''; ?>>Kepala</option>
                                     <option <?php echo ($u->jabatan=='staff')?'selected="selected"':''; ?>>Staff</option>
                                 </select>
+								<select hidden required  name="jabatan" id="feInputState" class="form-control">
+                                    <option <?php echo ($u->jabatan=='kepala')?'selected="selected"':''; ?>>Kepala</option>
+                                    <option <?php echo ($u->jabatan=='staff')?'selected="selected"':''; ?>>Staff</option>
+                                </select>
                             </div>
                             <div class="form-group">
                               <label for="feInputAddress">Status aktif</label>
@@ -121,6 +165,10 @@
                                     <option <?php echo ($u->stat=='aktif')?'selected="selected"':''; ?>>aktif</option>
                                     <option <?php echo ($u->stat=='nonaktif')?'selected="selected"':''; ?>>nonaktif</option>
                                 </select>
+								<select hidden required  name="stat" id="feInputState" class="form-control">
+                                    <option <?php echo ($u->stat=='aktif')?'selected="selected"':''; ?>>aktif</option>
+                                    <option <?php echo ($u->stat=='nonaktif')?'selected="selected"':''; ?>>nonaktif</option>
+                                </select> 
                             </div>
                             <button type="submit" class="btn btn-accent">Update Data</button>
                           </form>
@@ -138,6 +186,7 @@
                     <li class="list-group-item p-4">
                       <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk</strong>
                       <span>1. Pegawai hanya dapat melakukan edit data pada bagian No Telpon.</span><br>
+					  <span>2. Kode No Telp menggunakan 62.</span><br>
                     </li>
                   </ul>
                 </div>

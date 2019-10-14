@@ -1,8 +1,26 @@
+<script>
+   function printlayer(layer){
+       var generator=window.open(",'name,");
+       var layetext = document.getElementById(layer);
+       generator.document.write(layetext.innerHTML.replace("Print Me"));
+       generator.document.close();
+       generator.print();
+       generator.close();
+   }
+   </script>
 <!doctype html>
 <html>
-  <body style="">
-    <div style="margin: 0; padding: 0;background: #fff; width: 21cm; height: 29.7cm; font-family:calibri;">
-    <div style="padding-left:80px; padding-top:40px; padding-right:80px;" >
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+  <body style=""> <a href="" id="print" onclick="javascript:printlayer('div-id-name')">Klik disini untuk mencetak</a>
+    <div  id="div-id-name">
+    <div  >
         <div class="bg-white py-4">
         <div class=" pt-0">
             <div style="">
@@ -34,21 +52,26 @@
                     ?>
                     <thead >
                         <tr>
-                        <td>
-                           <div>NIM/NIK<span style="color:#fff;">aaaaaa'aaa</span>: <?php echo $u->id_peminjam ?></div>
-                           <div>Nama<span style="color:#fff;">aaaaaaaaaaaa</span>: 
-                           <?php foreach ($dosen as $a){if ($a->NIP == $u->id_peminjam) :echo $a->Nama;endif;}  ?>
-                           <?php foreach ($mahasiswa as $a){if ($a->nim == $u->id_peminjam) :echo $a->nama;endif;}  ?>
-                           </div>
-                           <div>Penyelenggara <span style="color:#fff;">aaaa</span>: <?php echo $u->penyelenggara;?></div>
-                          <div><span style="color:#fff;">aaaaaaaaaaaa</span></div>
-
-                        <td style="padding-left:2cm; text-align: left;">
-                           <div>Jenis Peminjaman<span style="color:#fff;">aa'a</span>: Sarana Prasarana</div>
-                           <div>Tanggal Pemakaian<span style="color:#fff;">aa</span>: <?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "d/m/Y") ; ?></div>
-                           <div>Jam 
-                           <span style="color:#fff;">aaaaaaaaaaaaaaa</span>: 
-                           <?php 
+                            <td>NIM/NIK</td>
+                            <td>: <?php echo $u->id_peminjam ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Jenis Peminjaman </td>
+                            <td>: Rutin</td>
+                        </tr>
+                        <tr>
+                            <td>Nama</td>
+                            <td>: <?php foreach ($dosen as $a){if ($a->NIP == $u->id_peminjam) :echo $a->Nama;endif;}  ?>
+                           <?php foreach ($mahasiswa as $a){if ($a->nim == $u->id_peminjam) :echo $a->nama;endif;}  ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Tanggal Pemakaian </td>
+                            <td>: <?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "d/m/Y") ; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Penyelenggara</td>
+                            <td>: <?php foreach ($penyelenggara as $a){if ($a->id_penyelenggara == $u->penyelenggara) :echo $a->penyelenggara;endif;} ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Jam </td>
+                            <td>: <?php 
                             if (strlen($u->jam_mulai) == 1){
                             echo "0".$u->jam_mulai.":00"; 
                             }else{
@@ -62,18 +85,24 @@
                             }else{
                                 echo $u->jam_selesai.":00"; 
                             } 
-                           ?>
-                           
-                           </div>
-                           <div>Status<span style="color:#fff;">aaaiaa'aaaaaaa</span>: <?php echo $u->status ?></div>
-                        </td>
+                           ?></td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Status </td>
+                            <td>: <?php echo $u->status ?></td>
+                        </tr>
+                        
                      
                     </thead>
                     <tbody>
                     </tbody>
                     <?php } ?>
                 </table>
+
+
 
 
                 <p>Sarana Prasarana : </p>

@@ -135,7 +135,8 @@
                       <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk</strong>
                       <span>1. Password pegawai baru akan diambil berdasarkan 6 terakhir dari NIP.</span><br>
                       <span>2. Status keaktifan pegawai akan secara default di set aktif.</span><br>
-                      <span>3. Jabatan digunakan untuk..</span>
+                      <span>3. Jabatan digunakan untuk..</span><br>
+					  <span>4. No Telpon menggunakan 62</span>
                     </li>
                   </ul>
                 </div>

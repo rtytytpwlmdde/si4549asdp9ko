@@ -68,7 +68,12 @@ class Jadwal extends CI_Controller{
 		////
 		redirect('jadwal/peta_jadwal_kuliah_filter?semester='.$id_semester);
 	}
-
+	public function get_prodi_by_jurusan_js(){
+      if($this->input->post('id_jurusan'))
+      {
+      echo $this->m_admin->get_prodi_by_jurusan_js($this->input->post('id_jurusan'));
+      }
+    }
 	function insertJadwalKuliahRutin(){
 		$id_semester = $this->input->post('id_semester');
 		$hari = $this->input->post('hari');
@@ -123,34 +128,37 @@ class Jadwal extends CI_Controller{
 	
 
 	function peta_jadwal_kuliah(){
-		ini_set('memory_limit', '-1');
-		$semester = $this->m_admin->semester_akhir();
-		$id_sem;
-		$sem;
-		foreach ($semester as $s) {
-			$id_sem = $s->id_semester;
-			$sem = $s->semester;
+		$date = date("Y-m-d");
+		$day = date('l', strtotime($date));
+		$status_semester = $this->m_admin->get_semester_by_date($date);
+		foreach ($status_semester as $sem) {
+			$tgl_mulai = $sem->tanggal_mulai;
+			$tgl_selesai = $sem->tanggal_selesai;
+			$start= str_replace("-","",$sem->tanggal_mulai);
+			$end= str_replace("-","",$sem->tanggal_selesai);
+			$tgl = str_replace("-","",$date);
+			if($start <= $tgl && $end >= $tgl){
+				$result= 'ada';
+			}else{
+				$result = 'kosong';
+			}
 		}
-		$data['main_view'] = 'jadwal/v_peta_jadwal_kuliah';
+		$data['main_view'] = 'admin/v_peta_kuliah';
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
-		$data['jam_kuliah_id'] = $this->m_admin->get_data_id_jam_kuliah();
-		$data['ruangan_id'] = $this->m_admin->get_data_id_ruangan_rutin_bagus();
-		$data['jadwal_kuliah'] = $this->m_admin->tampilLastJadwalKuliah($id_sem);
+		$data['peminjaman_rutin'] = $this->m_admin->tampilPeminjamanRutinToDay($date);
+		$data['jadwal_kuliah'] = $this->m_admin->tampilJadwalKuliahToDay($day);
 		$data['dosen'] = $this->m_admin->get_data_dosen();
-		$data['hari'] = $this->m_admin->get_data_hari();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['tanggal'] = $date;
+		$data['status_jadwal'] = $result;
 		$data['semester'] = $this->m_admin->tampilSemester()->result();
-		$data['last_semester'] = $sem;
-		$data['is_semester_by_id'] = $id_sem;
-		$data['jenis_barang'] = $this->m_jadwal->get_jenis_barang(); 
 		$this->load->view('template/template_admin',$data);
 	}
-
 	function tambahJadwalKuliah($id_semester, $id_ruang, $id_waktu, $hari){
-		$data['main_view'] = 'jadwal/v_tambah_jadwal_kuliah';
+		$data['main_view'] = 'admin/v_tambah_kuliah';
 		$data['dosen'] = $this->m_admin->get_data_dosen();
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
@@ -215,15 +223,33 @@ class Jadwal extends CI_Controller{
 	}
 
 	function filter_jadwal_plot(){
-		$date = $this->input->post('date');
-		$data['main_view'] = 'jadwal/v_peta_jadwal_kuliah_filter';
+		$date = $this->input->get('date');
+		$kategori = $this->input->get('kategori');
+		$sub_kategori = $this->input->get('sub_kategori');
+		$day = date('l', strtotime($date));
+		$status_semester = $this->m_admin->get_semester_by_date($date);
+		foreach ($status_semester as $sem) {
+			$tgl_mulai = $sem->tanggal_mulai;
+			$tgl_selesai = $sem->tanggal_selesai;
+			$start= str_replace("-","",$sem->tanggal_mulai);
+			$end= str_replace("-","",$sem->tanggal_selesai);
+			$tgl = str_replace("-","",$date);
+			if($start <= $tgl && $end >= $tgl){
+				$result= 'ada';
+			}else{
+				$result = 'kosong';
+			}
+		}
+		$data['main_view'] = 'admin/v_peta_kuliah';
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
+		$data['jadwal_kuliah'] = $this->m_admin->tampilJadwalKuliahToDay($day);
 		$data['peminjaman_rutin'] = $this->m_admin->tampilPeminjamanRutinToDay($date);
 		$data['dosen'] = $this->m_admin->get_data_dosen();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
-		$data['tanggal'] = $this->m_admin->get_data_tanggal_plot($date);
+		$data['tanggal'] = $date;
+		$data['status_jadwal'] = $result;
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
 		$data['semester'] = $this->m_admin->tampilSemester()->result();
 		$this->load->view('template/template_admin',$data);

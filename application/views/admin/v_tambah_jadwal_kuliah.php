@@ -51,13 +51,13 @@
                                 <label for="feInputAddress">Hari</label>
                                     <select required  name="hari" id="feInputState" class="form-control">
                                     <option value="" selected>Pilih </option>
-                                    <option value="Monday">Monday</option>
-                                    <option value="Tuesday">Tuesday</option>
-                                    <option value="Wednesday">Wednesday </option>
-                                    <option value="Thursday">Thursday </option>
-                                    <option value="Friday">Friday </option>
-                                    <option value="Saturday">Saturday </option>
-                                    <option value="Sunday">Sunday </option>
+                                    <option value="Monday">Senin</option>
+                                    <option value="Tuesday">Selasa</option>
+                                    <option value="Wednesday">Rabu </option>
+                                    <option value="Thursday">Kamis </option>
+                                    <option value="Friday">Jumat </option>
+                                    <option value="Saturday">Sabtu </option>
+                                    <option value="Sunday">Minggu </option>
                                      </select>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -83,12 +83,13 @@
                             <div class="form-row">
                             <div class="form-group col-md-8">
                                 <label for="feInputAddress">Mata Kuliah</label>
-                                    <select required  name="kode_matkul" id="feInputState" class="form-control">
-                                    <option value="" selected>Pilih </option>
-                                    <?php foreach($mata_kuliah as $u ){ ?>
-                                    <option value="<?php echo $u->kode_matkul;?>"><?php echo $u->nama_matkul;     ?></option> 
-                                    <?php } ?>
-                                </select>
+                                     <input required list="list_matkul" name="kode_matkul" type="text" class="form-control" id="feInputAddress" placeholder="Ketik.."> 
+                                <datalist id="list_matkul">
+                                    <?php foreach($mata_kuliah as $p): ?>
+                                    <option value="<?php echo $p->kode_matkul?>"><?php echo $p->kode_matkul?> - <?php echo $p->nama_matkul?></option>
+                                    
+                                    <?php endforeach ?>
+                                </datalist>
                             </div>
                             <div class="form-group col-md-4">
                                 <label for="feInputAddress">Kelas</label>
@@ -97,32 +98,28 @@
                             </div>
                             <div class="form-group">
                                 <label for="feInputAddress">Dosen</label>
-                                    <select required  name="id_dosen" id="feInputState" class="form-control">
-                                    <option value="" selected>Pilih </option>
-                                    <?php foreach($dosen as $u ){ ?>
-                                    <option value="<?php echo $u->NIP;?>"><?php echo $u->Nama;     ?></option> 
-                                    <?php } ?>
-                                </select>
+                                    <input required list="list_dosen" name="id_dosen" type="text" class="form-control" id="feInputAddress" placeholder="Ketik.."> 
+                                <datalist id="list_dosen">
+                                    <?php foreach($dosen as $p): ?>
+                                    <option value="<?php echo $p->NIP?>"><?php echo $p->NIP?> - <?php echo $p->Nama?></option>
+                                    <?php endforeach ?>
+                                </datalist>
                             </div>
-                            
                           <div class="form-row">
                                 <div class="form-group col-md-6">
                                 <label for="feInputAddress">Jurusan</label>
-                                    <select required  name="id_jurusan" id="feInputState" class="form-control">
-                                    <option value="" selected>Pilih </option>
-                                    <?php foreach($jurusan as $u ){ ?>
-                                    <option value="<?php echo $u->id_jurusan;?>"><?php echo $u->jurusan;     ?></option> 
-                                    <?php } ?>
-                                </select>
+                                    <select required  name="id_jurusan" id="jurusan" class="form-control">
+                                      <option value="" selected>Pilih </option>
+                                        <?php foreach($jurusan as $u ){ ?>
+                                        <option value="<?php echo $u->id_jurusan;?>"><?php echo $u->jurusan;     ?></option> 
+                                        <?php } ?>
+                                    </select>
                                 </div>
                                 <div class="form-group col-md-6">
                                     <label for="feInputAddress">Program Studi</label>
-                                        <select required  name="id_prodi" id="feInputState" class="form-control">
-                                        <option value="" selected>Pilih </option>
-                                        <?php foreach($prodi as $u ){ ?>
-                                        <option value="<?php echo $u->id_prodi;?>"><?php echo $u->prodi;     ?></option> 
-                                        <?php } ?>
-                                    </select>
+                                        <select class="form-control" id="prodi" name="id_prodi" >
+										<option value=""selected disabled>Pilih Program Studi</option>
+										</select>
                                 </div>
                                 <div hidden class="form-group col-md-4">
                                     <label for="feInputAddress">status</label>
@@ -140,6 +137,30 @@
                 </div>
               </div> 
             </div>
+<script>			
+	  $(document).ready(function(){
+
+    $('#jurusan').change(function(){
+      var e = document.getElementById ("jurusan");
+      var id_jurusan = e.options [e.selectedIndex] .value;
+      console.log(id_jurusan)
+      if(id_jurusan != '')
+      {
+        $.ajax({
+          url:"<?php echo site_url();?>/admin/get_prodi_by_jurusan_js",
+          method: "POST",
+          data:{id_jurusan:id_jurusan},
+          success:function(data)
+          {
+            $('#prodi').html(data);
+          }
+        })
+      }
+    })
+   
+  })
+
+</script>
 </div>
     
 

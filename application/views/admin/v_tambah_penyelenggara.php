@@ -44,6 +44,10 @@
                               <label for="feInputAddress">Nama Penyelenggara</label>
                               <input required  name="penyelenggara" type="text" class="form-control" id="feInputAddress" placeholder="Nama Penyelenggara"> 
                             </div>
+							<div class="form-group">
+                              <label for="feInputAddress">Jenis Penyelenggara</label>
+                              <input required  name="status" type="text" class="form-control" id="feInputAddress" placeholder="Status"> 
+                            </div>
                             <button type="submit" class="btn btn-accent">Tambah Penyelenggara</button>
                           </form>
                         </div>
@@ -51,8 +55,21 @@
                     </li>
                   </ul>
                 </div>
-              </div> 
+              </div>
+			<div class="col-lg-4">
+                <div class="card card-small mb-4 pt-3">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-4">
+                      <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk Jenis Penyelenggara</strong>
+                      <span>1. Penyelenggara dengan ID " 1 " digunakan untuk mahsiswa.</span><br>
+					  <span>2. Penyelenggara dengan ID " 2 " digunakan untuk Non mahsiswa.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
+            </div>
+			
 </div>
     
 

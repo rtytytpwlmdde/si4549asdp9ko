@@ -109,6 +109,8 @@
                   <a class="dropdown-item " href="<?php echo base_url('admin/penyelenggara'); ?>">Penyelenggara</a>
                   <a class="dropdown-item " href="<?php echo base_url('admin/jenis_barang'); ?>">Jenis Barang</a>
                   <a class="dropdown-item " href="<?php echo base_url('admin/barang'); ?>">Sarana Prasarana</a>
+				  <a class="dropdown-item " href="<?php echo base_url('admin/lihat_jurusan'); ?>">Data Jurusan</a>
+                  <a class="dropdown-item " href="<?php echo base_url('admin/lihat_prodi'); ?>">Data Prodi</a>
                 </div>
               </li>
 				<li class="nav-item">
@@ -123,6 +125,15 @@
                   <span>Edit No Telphone</span>
                 </a>
 				</li>
+				<li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle " data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="true">
+                  <i class="material-icons">poll</i>
+                  <span>Master Data Peminjam</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-small">
+                  <a class="dropdown-item " href="<?php echo base_url('admin/history_rutin'); ?>"> Data Peminjaman Rutin</a>
+                  <a  class="dropdown-item " href="<?php echo base_url('admin/history_non_rutin'); ?>">Data Peminjaman Non Rutin</a>
+              </li>
             </ul>
           </div>
         </aside>

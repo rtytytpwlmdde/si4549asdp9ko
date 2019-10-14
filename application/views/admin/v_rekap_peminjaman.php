@@ -109,9 +109,11 @@
                                     <th scope="col" class="border-0">Kode Booking</th>
                                     <th scope="col" class="border-0">Nama</th>
 									<th scope="col" class="border-0">Nama Kegiatan</th>
-                                    <th scope="col" class="border-0">Tanggal Peminjaman</th>
+									<th scope="col" class="border-0">Tanggal Peminjaman</th>
+                                    <th scope="col" class="border-0">Tanggal Pengunaan</th>
                                     <th scope="col" class="border-0">Jenis</th>
 									<th scope="col" class="border-0">Sarana dan Prasarana</th>
+									<th scope="col" class="border-0">Status</th>
 									<th scope="col" class="border-0">Nama Validator</th>
 									
                                 </tr>
@@ -155,7 +157,36 @@
                                     }
                                 } ?>
                         </td>
+						
 									<td><?php echo $u->tanggal_peminjaman ?></td>
+									
+									<td> 
+                            <?php if($u->jenis_peminjaman == 'rutin'){ 
+                                foreach ($peminjaman_rutin as $pr){ 
+                                    if($u->id_peminjaman == $pr->id_peminjaman_rutin){ 
+                                    echo $pr->tanggal_pemakaian;
+                                    }
+                                }
+                                }else if($u->jenis_peminjaman == 'non rutin'){ 
+                                    foreach ($peminjaman__non_rutin as $pb){ 
+                                        if($u->id_peminjaman == $pb->id_peminjaman_non_rutin){ 
+                                            echo $pb->tanggal_pemakaian; ?> <br><?php
+                                        }
+                                    }
+                                }else if($u->jenis_peminjaman == 'khusus'){ 
+                                    foreach ($peminjaman__non_rutin as $pb){ 
+                                        if($u->id_peminjaman == $pb->id_peminjaman_non_rutin){ 
+                                            echo $pb->tanggal_pemakaian; ?> <br><?php
+                                        }
+                                    }
+                                } else{ 
+                                    foreach ($peminjaman_barang as $pb){ 
+                                        if($u->id_peminjaman == $pb->id_peminjaman_barang){ 
+                                            echo $pb->tanggal_pemakaian; ?> <br><?php
+                                        }
+                                    }
+                                } ?>
+                        </td>
 									<td><?php echo $u->jenis_peminjaman ?></td>
 									<td> 
                             <?php if($u->jenis_peminjaman == 'rutin'){ 
@@ -184,6 +215,7 @@
                                     }
                                 } ?>
                         </td>
+						<td><?php echo $u->status_peminjaman ?></td>
 						<td> 
                             <?php if($u->jenis_peminjaman == 'rutin'){ 
                                 foreach ($peminjaman_rutin as $pr){ 
@@ -211,6 +243,7 @@
                                     }
                                 } ?>
                         </td>
+						
 									
 								</tr>
 							<?php } ?>

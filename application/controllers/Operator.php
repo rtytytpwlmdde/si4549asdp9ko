@@ -18,6 +18,7 @@ class Operator extends CI_Controller{
 		$this->load->model('m_admin');
 		$this->load->model('m_jadwal');
 		$this->load->model('m_auth');
+		$this->load->model('m_mahasiswa');
 	}
 
 	function index(){
@@ -104,13 +105,26 @@ class Operator extends CI_Controller{
 		$stat = 'aktif';
 		$jabatan = $this->input->post('jabatan');
 		$password = substr($NIP, -6);
+		
+		if(!preg_match('/[^+0-9]/',trim($No_Telp))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($No_Telp), 0, 2)=='62'){
+            $hp = trim($No_Telp);
+        }elseif(substr(trim($No_Telp), 0, 3)=='+62'){
+            $hp = trim($No_Telp);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($No_Telp), 0, 1)=='0'){
+            $hp = '62'.substr(trim($No_Telp), 1);
+        }
+    }
 		$data = array(
 			'NIP' => $NIP,
 			'Nama' => $Nama,
 			'Status' => $Status,
 			'Pangkat' => $Pangkat,
 			'Password' =>$password,
-			'No_Telp' =>$No_Telp,
+			'No_Telp' =>$hp,
 			'Bagian' => $Bagian,
 			'Sub_Bagian' => $Sub_Bagian,
 			'stat' => $stat,
@@ -142,6 +156,18 @@ class Operator extends CI_Controller{
 		$jabatan = $this->input->post('jabatan');
 		$stat = $this->input->post('stat');
 		
+		if(!preg_match('/[^+0-9]/',trim($No_Telp))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($No_Telp), 0, 2)=='62'){
+            $hp = trim($No_Telp);
+        }elseif(substr(trim($No_Telp), 0, 3)=='+62'){
+            $hp = trim($No_Telp);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($No_Telp), 0, 1)=='0'){
+            $hp = '62'.substr(trim($No_Telp), 1);
+        }
+    }
 		
 		$data = array(
 			'Nama' => $Nama,
@@ -152,7 +178,7 @@ class Operator extends CI_Controller{
 			'Urusan' => $Urusan,
 			'stat' => $stat,
 			'jabatan' => $jabatan,
-			'No_Telp' => $No_Telp
+			'No_Telp' => $hp
 			
 		
 		);
@@ -193,14 +219,25 @@ class Operator extends CI_Controller{
 		$id_prodi = $this->input->post('id_prodi');
 		$telpon = $this->input->post('telpon');
 		$password = substr($nim, -6);
-		
+		if(!preg_match('/[^+0-9]/',trim($telpon))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($telpon), 0, 2)=='62'){
+            $hp = trim($telpon);
+        }elseif(substr(trim($telpon), 0, 3)=='+62'){
+            $hp = trim($telpon);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($telpon), 0, 1)=='0'){
+            $hp = '62'.substr(trim($telpon), 1);
+        }
+    }
 		$data = array(
 			'nim' => $nim,
 			'nama' => $nama,
 			'id_jurusan' => $id_jurusan,
 			'id_prodi' => $id_prodi,
 			'password' =>$password,
-			'telpon' =>$telpon
+			'telpon' =>$hp
 		);
 		$this->m_admin->tambahdata($data,'mahasiswa');
 		$this->session->set_flashdata('notif', "Mahasiswa $NIM berhasil ditambahkan");
@@ -233,12 +270,23 @@ class Operator extends CI_Controller{
 		$id_jurusan = $this->input->post('id_jurusan');
 		$id_prodi = $this->input->post('id_prodi');
 		$telpon = $this->input->post('telpon');
-		
+		if(!preg_match('/[^+0-9]/',trim($telpon))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($telpon), 0, 2)=='62'){
+            $hp = trim($telpon);
+        }elseif(substr(trim($telpon), 0, 3)=='+62'){
+            $hp = trim($telpon);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($telpon), 0, 1)=='0'){
+            $hp = '62'.substr(trim($telpon), 1);
+        }
+    }
 		$data = array(
 			'nama' => $nama,
 			'id_jurusan' => $id_jurusan,
 			'id_prodi' => $id_prodi,
-			'telpon' => $telpon	
+			'telpon' => $hp	
 		
 		);
 
@@ -265,11 +313,13 @@ class Operator extends CI_Controller{
 	}
 	function tambahPenyelenggara(){
 		$penyelenggara = $this->input->post('penyelenggara');
+		$status = $this->input->post('status');
 		$status_penyelenggara = 'aktif';
 		
 		$data = array(
 			'penyelenggara' => $penyelenggara,
-			'status_penyelenggara' =>$status_penyelenggara
+			'status_penyelenggara' =>$status_penyelenggara,
+			'status' => $status
 		);
 		$this->m_admin->tambahdata($data,'penyelenggara');
 		$this->session->set_flashdata('notif', "Penyelenggara $penyelenggara berhasil ditambahkan");
@@ -294,11 +344,12 @@ class Operator extends CI_Controller{
 		$id_penyelenggara = $this->input->post('id_penyelenggara');
 		$penyelenggara = $this->input->post('penyelenggara');
 		$status_penyelenggara = $this->input->post('status_penyelenggara');
-		
+		$status = $this->input->post('status');
 		$data = array(
 			'id_penyelenggara' => $id_penyelenggara,
 			'penyelenggara' => $penyelenggara,
-			'status_penyelenggara' => $status_penyelenggara
+			'status_penyelenggara' => $status_penyelenggara,
+			'status' => $status
 		);
 
 		$where = array('id_penyelenggara' => $id_penyelenggara);
@@ -713,21 +764,39 @@ class Operator extends CI_Controller{
 		$this->load->view('template/template_operator',$data);
 	}
 
-	function tambahJadwalKuliah($id_semester, $id_ruang, $id_waktu, $hari){
-		$data['main_view'] = 'operator/v_tambah_jadwal_kuliah';
-		$data['dosen'] = $this->m_admin->get_data_dosen();
-		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
-		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
-		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
-		$data['hari'] = $this->m_jadwal->get_data_hari_by_id($hari);
-		$data['prodi'] = $this->m_admin->tampilProdi()->result();
-		$data['ruangan'] = $this->m_jadwal->get_data_ruangan_rutin_bagus_by_id($id_ruang);
-		$data['jam_kuliah'] = $this->m_jadwal->get_jam_kuliah_by_id($id_waktu);
-		$data['semester'] = $this->m_jadwal->get_data_semester_by_id($id_semester);
-		$this->load->view('template/template_operator',$data);
-
+	function tambahJadwalKuliah(){
+		$id_semester = $this->input->post('id_semester');
+		$hari = $this->input->post('hari');
+		$id_jam_kuliah = $this->input->post('id_jam_kuliah');
+		$id_ruangan = $this->input->post('id_ruangan');
+		$kode_matkul = $this->input->post('kode_matkul');
+		$id_dosen = $this->input->post('id_dosen');
+		$id_jurusan = $this->input->post('id_jurusan');
+		$kelas = $this->input->post('kelas');
+		$id_prodi = $this->input->post('id_prodi');
+		$status = $this->input->post('status');
+		$cek = $this->m_admin->cek_jadwal_kuliah($id_semester,$hari,$id_jam_kuliah,$id_ruangan)->num_rows();
+		if($cek > 0 ){
+			$this->session->set_flashdata('notif', "GAGAL! jadwal kuliah tersebut sudah terdaftar di sistem");
+			redirect('operator/inputJadwalKuliah/'.$id_semester);
+		}else{ 
+			$data = array(
+				'id_semester' => $id_semester,
+				'hari' => $hari,
+				'id_jam_kuliah' => $id_jam_kuliah,
+				'id_ruangan' => $id_ruangan,
+				'kode_matkul' => $kode_matkul,
+				'kelas' => $kelas,
+				'id_dosen' => $id_dosen,
+				'id_jurusan' => $id_jurusan,
+				'id_prodi' => $id_prodi,
+				'status' => $status
+			);
+			$this->m_admin->tambahdata($data,'jadwal_kuliah');
+			$this->session->set_flashdata('notif', "jadwal kuliah berhasil ditambahkan");
+			redirect('operator/jadwal_kuliah/'.$id_semester);
+		}
 	}
-
 	function hapusJadwalKuliah($id_semester,$id_jadwal_kuliah){
 		$where = array('id_jadwal_kuliah' => $id_jadwal_kuliah);
 		$this->m_admin->hapus_data($where,'jadwal_kuliah');
@@ -748,10 +817,50 @@ class Operator extends CI_Controller{
 		$data['semester'] = $this->m_admin->tampilSemester()->result();
 		$this->load->view('template/template_operator',$data);
 	}
+	
+	function editJadwal(){
+		$id_jadwal_kuliah = $this->input->post('id_jadwal_kuliah');
+		$id_semester = $this->input->post('id_semester');
+		$hari = $this->input->post('hari');
+		$id_jam_kuliah = $this->input->post('id_jam_kuliah');
+		$id_ruangan = $this->input->post('id_ruangan');
+		$kode_matkul = $this->input->post('kode_matkul');
+		$id_dosen = $this->input->post('id_dosen');
+		$kelas = $this->input->post('kelas');
+		$id_jurusan = $this->input->post('id_jurusan');
+		$id_prodi = $this->input->post('id_prodi');
+		$status = $this->input->post('status');
+		$cek = $this->m_admin->cek_update_jadwal_kuliah($id_jadwal_kuliah,$id_semester,$hari,$id_jam_kuliah,$id_ruangan)->num_rows();
+		if($cek > 0 ){
+			$this->session->set_flashdata('notif', "GAGAL! jadwal kuliah tersebut sudah terdaftar di sistem");
+			redirect('operator/updateJadwalKuliah/'.$id_jadwal_kuliah);
+		}else{ 
+			$data = array(
+				'id_jadwal_kuliah' => $id_jadwal_kuliah,
+				'id_semester' => $id_semester,
+				'hari' => $hari,
+				'id_jam_kuliah' => $id_jam_kuliah,
+				'id_ruangan' => $id_ruangan,
+				'kode_matkul' => $kode_matkul,
+				'id_dosen' => $id_dosen,
+				'kelas' => $kelas,
+				'id_jurusan' => $id_jurusan,
+				'id_prodi' => $id_prodi,
+				'status' => $status
+			);
+				
+			$where = array('id_jadwal_kuliah' => $id_jadwal_kuliah);
+
+			$this->m_admin->update_data($where,$data,'jadwal_kuliah');
+			$this->session->set_flashdata('notif', "SUKSES! jadwal kuliah berhasil di Update");
+			redirect('operator/jadwal_kuliah/'.$id_semester);
+		}
+	}
+
 
 	
 		function editJadwalKuliah($id_semester,$id_jadwal_kuliah){
-		$data['main_view'] = 'operator/v_edit_jadwal_kuliah';
+		$data['main_view'] = 'operator/v_edit_kuliah';
 		$data['jadwal_kuliah'] = $this->m_jadwal->get_data_jadwal_kuliah_by_id($id_jadwal_kuliah);
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
@@ -1525,32 +1634,40 @@ class Operator extends CI_Controller{
 	
 	
 		function peta_jadwal_kuliah(){
-		ini_set('memory_limit', '-1');
-		$semester = $this->m_admin->semester_akhir();
-		$id_sem;
-		$sem;
-		foreach ($semester as $s) {
-			$id_sem = $s->id_semester;
-			$sem = $s->semester;
+		$date = date("Y-m-d");
+		$day = date('l', strtotime($date));
+		$status_semester = $this->m_admin->get_semester_by_date($date);
+		foreach ($status_semester as $sem) {
+			$tgl_mulai = $sem->tanggal_mulai;
+			$tgl_selesai = $sem->tanggal_selesai;
+			$start= str_replace("-","",$sem->tanggal_mulai);
+			$end= str_replace("-","",$sem->tanggal_selesai);
+			$tgl = str_replace("-","",$date);
+			if($start <= $tgl && $end >= $tgl){
+				$result= 'ada';
+			}else{
+				$result = 'kosong';
+			}
 		}
-		$data['main_view'] = 'operator/v_peta_jadwal_kuliah';
+		$data['main_view'] = 'operator/v_peta_kuliah';
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
-		$data['jam_kuliah_id'] = $this->m_admin->get_data_id_jam_kuliah();
-		$data['ruangan_id'] = $this->m_admin->get_data_id_ruangan_rutin_bagus();
-		$data['jadwal_kuliah'] = $this->m_admin->tampilLastJadwalKuliah($id_sem);
+		$data['peminjaman_rutin'] = $this->m_admin->tampilPeminjamanRutinToDay($date);
+		$data['jadwal_kuliah'] = $this->m_admin->tampilJadwalKuliahToDay($day);
 		$data['dosen'] = $this->m_admin->get_data_dosen();
-		$data['hari'] = $this->m_admin->get_data_hari();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['tanggal'] = $date;
+		$data['status_jadwal'] = $result;
 		$data['semester'] = $this->m_admin->tampilSemester()->result();
-		$data['last_semester'] = $sem;
-		$data['is_semester_by_id'] = $id_sem;
-		$data['jenis_barang'] = $this->m_jadwal->get_jenis_barang(); 
 		$this->load->view('template/template_operator',$data);
 	}
-
+	function get_subkategori(){
+		$id=$this->input->post('id');
+		$data=$this->m_mahasiswa->get_subkategori($id);
+		echo json_encode($data);
+	}
 
 	function get_option_matakuliah(){
 		$id=$this->input->post('id');
@@ -1603,15 +1720,33 @@ class Operator extends CI_Controller{
 	}
 
 	function filter_jadwal_plot(){
-		$date = $this->input->post('date');
-		$data['main_view'] = 'operator/v_peta_jadwal_kuliah_filter';
+		$date = $this->input->get('date');
+		$kategori = $this->input->get('kategori');
+		$sub_kategori = $this->input->get('sub_kategori');
+		$day = date('l', strtotime($date));
+		$status_semester = $this->m_admin->get_semester_by_date($date);
+		foreach ($status_semester as $sem) {
+			$tgl_mulai = $sem->tanggal_mulai;
+			$tgl_selesai = $sem->tanggal_selesai;
+			$start= str_replace("-","",$sem->tanggal_mulai);
+			$end= str_replace("-","",$sem->tanggal_selesai);
+			$tgl = str_replace("-","",$date);
+			if($start <= $tgl && $end >= $tgl){
+				$result= 'ada';
+			}else{
+				$result = 'kosong';
+			}
+		}
+		$data['main_view'] = 'operator/v_peta_kuliah';
 		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
 		$data['jam_kuliah'] = $this->m_admin->tampilJamKuliah()->result();
+		$data['jadwal_kuliah'] = $this->m_admin->tampilJadwalKuliahToDay($day);
 		$data['peminjaman_rutin'] = $this->m_admin->tampilPeminjamanRutinToDay($date);
 		$data['dosen'] = $this->m_admin->get_data_dosen();
 		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
-		$data['tanggal'] = $this->m_admin->get_data_tanggal_plot($date);
+		$data['tanggal'] = $date;
+		$data['status_jadwal'] = $result;
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
 		$data['semester'] = $this->m_admin->tampilSemester()->result();
 		$this->load->view('template/template_operator',$data);
@@ -1691,7 +1826,6 @@ class Operator extends CI_Controller{
 
 	function cek_mahasiswa(){
 		$NIP = $this->input->post('NIP');
-		$nama = $this->input->post('nama');
 		$id_jurusan = $this->input->post('id_jurusan');
 		//$cek = $this->m_admin->cek_ketersediaan_pegawai($NIP)->num_rows();
 		$cek1 = $this->m_admin->cek_ketersediaan_mahasiswa($NIP)->num_rows();
@@ -1733,6 +1867,144 @@ class Operator extends CI_Controller{
 		$this->load->view('export/v_barang', $data);
 	}
 	
+	function lihat_jurusan(){
+		$data['main_view'] = 'operator/v_list_jurusan';
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$this->load->view('template/template_operator', $data);
+	}
+	
+	function inputJurusan(){
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['main_view'] = 'operator/v_tambah_jurusan';
+		$this->load->view('template/template_operator',$data);
+	}
+	
+	function tambahJurusan(){
+		$jurusan = $this->input->post('jurusan');
+		
+		$data = array(
+			'jurusan' => $jurusan
+		);
+		$this->m_admin->tambahdata($data,'jurusan');
+		$this->session->set_flashdata('notif', "Jurusan $jurusan berhasil ditambahkan");
+		redirect('operator/lihat_jurusan');
+	}
+	
+	function updateJurusan($id_jurusan){
+		$data['main_view'] = 'operator/v_edit_jurusan';
+		$where = array('id_jurusan' => $id_jurusan);
+		$data['jurusan'] = $this->m_admin->edit_data($where,'jurusan')->result();
+		$this->load->view('template/template_operator',$data);
+	}
+	
+	function editJurusan(){
+		$id_jurusan = $this->input->post('id_jurusan');
+		$jurusan = $this->input->post('jurusan');
+		
+		$data = array(
+			'id_jurusan' => $id_jurusan,
+			'jurusan' => $jurusan
+		);
+
+		$where = array('id_jurusan' => $id_jurusan);
+
+		$this->m_admin->update_data($where,$data,'jurusan');
+		$this->session->set_flashdata('notif', "Data jurusan $jurusan berhasil di Update");
+		redirect('operator/lihat_jurusan');
+	}
+	
+	function hapusJurusan($id_jurusan){
+		$where = array('id_jurusan' => $id_jurusan);
+		$this->m_admin->hapus_data($where,'jurusan');
+		$this->session->set_flashdata('notif', "Data penyelenggara $id_jurusan berhasil dihapus");
+		redirect('operator/lihat_jurusan');
+	}
+	
+	//CRUD prodi alvin
+	function lihat_prodi(){
+		$data['main_view'] = 'operator/v_list_prodi';
+		$data['jurusan'] = $this->m_admin->get_jurusan();
+		
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$this->load->view('template/template_operator', $data);
+	}
+	
+	function inputProdi(){
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['main_view'] = 'operator/v_tambah_prodi';
+		$this->load->view('template/template_operator',$data);
+	}
+	
+	function tambahProdi(){
+		$id_jurusan = $this->input->post('id_jurusan');
+		$nama_prodi = $this->input->post('nama_prodi');
+		
+		$data = array(
+			'id_jurusan' => $id_jurusan,
+			'prodi' => $nama_prodi
+		);
+		$this->m_admin->tambahdata($data,'prodi');
+		$this->session->set_flashdata('notif', "Jurusan $nama_prodi berhasil ditambahkan");
+		redirect('operator/lihat_prodi');
+	}
+	
+	function updateProdi($id_prodi){
+		$data['main_view'] = 'operator/v_edit_prodi';
+		$where = array('id_prodi' => $id_prodi);
+		$data['jurusan'] = $this->m_admin->get_jurusan();
+		
+		$data['prodi'] = $this->m_admin->edit_data($where,'prodi')->result();
+		$this->load->view('template/template_operator',$data);
+	}
+	
+	function editProdi(){
+		$id_prodi = $this->input->post('id_prodi');
+		$id_jurusan = $this->input->post('id_jurusan');
+		$prodi = $this->input->post('nama_prodi');
+		
+		$data = array(
+			'id_prodi' => $id_prodi,
+			'id_jurusan' => $id_jurusan,
+			'prodi' => $prodi
+		);
+
+		$where = array('id_prodi' => $id_prodi);
+
+		$this->m_admin->update_data($where,$data,'prodi');
+		$this->session->set_flashdata('notif', "Data jurusan $prodi berhasil di Update");
+		redirect('operator/lihat_prodi');
+	}
+	
+	function hapusProdi($id_prodi){
+		$where = array('id_prodi' => $id_prodi);
+		$this->m_admin->hapus_data($where,'prodi');
+		$this->session->set_flashdata('notif', "Data penyelenggara $id_prodi berhasil dihapus");
+		redirect('operator/lihat_prodi');
+	}
+	function tambahJadwal($id_semester, $id_ruang, $id_waktu, $hari){
+		$data['main_view'] = 'operator/v_tambah_kuliah';
+		$data['dosen'] = $this->m_admin->get_data_dosen();
+		$data['mata_kuliah'] = $this->m_admin->get_data_matakuliah();
+		$data['ruangan'] = $this->m_admin->get_data_ruangan_rutin_bagus();
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$data['hari'] = $this->m_jadwal->get_data_hari_by_id($hari);
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['ruangan'] = $this->m_jadwal->get_data_ruangan_rutin_bagus_by_id($id_ruang);
+		$data['jam_kuliah'] = $this->m_jadwal->get_jam_kuliah_by_id($id_waktu);
+		$data['semester'] = $this->m_jadwal->get_data_semester_by_id($id_semester);
+		$this->load->view('template/template_operator',$data);
+
+	}
+	
+	public function get_prodi_by_jurusan_js(){
+      if($this->input->post('id_jurusan'))
+      {
+      echo $this->m_admin->get_prodi_by_jurusan_js($this->input->post('id_jurusan'));
+      }
+    }
+
 
 
 }

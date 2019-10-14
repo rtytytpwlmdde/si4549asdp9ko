@@ -3,21 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>SIRUAS FEB UB</title>
-		<meta property="og:title" content="Siruas Fakultas Ekonomi Dan Bisnis (FEB) Universitas Brawijaya">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SIRUAS - Fakultas Ekonomi Dan Bisnis (FEB) Universitas Brawijaya">
-	  <meta name="keywords" content="FEB,FEB UB,UB">
-    <meta name="author" content="Siruas">
-	  <meta name="robots" content="index, follow">
-    <meta name="HandheldFriendly" content="true">
-    <meta http-equiv="cleartype" content="on">
-    <meta property="og:site_name" content="Siruas - Fakultas Ekonomi Dan Bisnis (FEB) Universitas Brawijaya">
-    <meta property="og:description" content="Siruas - Fakultas Ekonomi Dan Bisnis (FEB) Universitas Brawijaya">
-
-
-
-
+    <title>SIRUAS FEB</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">

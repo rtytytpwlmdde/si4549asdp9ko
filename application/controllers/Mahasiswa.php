@@ -21,6 +21,14 @@ class Mahasiswa extends CI_Controller{
 	function index(){
 		redirect('mahasiswa/peta_jadwal_kuliah/');
 	}
+	
+		public function get_prodi_by_jurusan_js(){
+      if($this->input->post('id_jurusan'))
+      {
+      echo $this->m_mahasiswa->get_prodi_by_jurusan_js($this->input->post('id_jurusan'));
+      }
+    }
+
 
 	function peta_jadwal_kuliah(){
 		$date = date("Y-m-d");
@@ -808,13 +816,22 @@ class Mahasiswa extends CI_Controller{
 			$data_non_rutin = array(
 				'status' => $status
 			);
+			$data_non_rutin_wakadek = array(
+				'status_wakadek' => $status
+			);
 			$data_peminjaman = array(
 				'status_peminjaman' => $status
+			);
+			$data_peminjaman_wakadek = array(
+				'status_peminjaman_wakadek' => $status
 			);
 			$where_non_rutin = array('id_peminjaman_non_rutin' => $id_peminjaman);
 			$where_peminjaman = array('id_peminjaman' => $id_peminjaman);
 			$this->m_admin->update_data($where_non_rutin,$data_non_rutin,'peminjaman_non_rutin');
 			$this->m_admin->update_data($where_peminjaman,$data_peminjaman,'peminjaman');
+			//alvin
+			$this->m_admin->update_data($where_non_rutin,$data_non_rutin_wakadek,'peminjaman_non_rutin');
+			$this->m_admin->update_data($where_peminjaman,$data_peminjaman_wakadek,'peminjaman');
 			$this->session->set_flashdata('notif', "SUKSES! Peminjaman Berhasil dikirim");
 			redirect('mahasiswa/history_peminjaman/'.$id_peminjam);
 		}else{
@@ -1024,7 +1041,7 @@ class Mahasiswa extends CI_Controller{
 		$data['agenda'] = $this->m_admin->get_data_agenda_umum($date);
 		$data['ruangan_agenda'] = $this->m_admin->get_data_ruangan_agenda($date);
 		$data['ruangan'] = $this->m_admin->tampilRuangan()->result();
-		$data['penyelenggara'] = $this->m_admin->tampilPenyelenggara()->result();
+		$data['penyelenggara']= $this->m_admin->tampilPenyelenggara()->result();
 		$data['date'] = $this->m_jadwal->get_last_date();
 		$this->load->view('template/template_mahasiswa',$data);	
 	}
@@ -1114,12 +1131,23 @@ class Mahasiswa extends CI_Controller{
 		$id_jurusan = $this->input->post('id_jurusan');
 		$id_prodi = $this->input->post('id_prodi');
 		$telpon = $this->input->post('telpon');
-		
+		if(!preg_match('/[^+0-9]/',trim($telpon))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($telpon), 0, 2)=='62'){
+            $hp = trim($telpon);
+        }elseif(substr(trim($telpon), 0, 3)=='+62'){
+            $hp = trim($telpon);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($telpon), 0, 1)=='0'){
+            $hp = '62'.substr(trim($telpon), 1);
+        }
+    }
 		$data = array(
 			'nama' => $nama,
 			'id_jurusan' => $id_jurusan,
 			'id_prodi' => $id_prodi,
-			'telpon' => $telpon	
+			'telpon' => $hp	
 		
 		);
 

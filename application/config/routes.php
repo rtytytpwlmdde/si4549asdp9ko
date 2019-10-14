@@ -52,3 +52,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 $route['default_controller'] = 'Guest';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
+$route['validator/peminjaman_non_rutin_filter/(:num)'] = "validator/notfound404";

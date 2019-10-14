@@ -102,13 +102,25 @@ class Admin extends CI_Controller{
 		$stat = 'aktif';
 		$jabatan = $this->input->post('jabatan');
 		$password = substr($NIP, -6);
+		
+		if(!preg_match('/[^+0-9]/',trim($No_Telp))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($No_Telp), 0, 2)=='62'){
+            $hp = trim($No_Telp);
+        }
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($No_Telp), 0, 1)=='0'){
+            $hp = '62'.substr(trim($No_Telp), 1);
+        }
+    }
+		
 		$data = array(
 			'NIP' => $NIP,
 			'Nama' => $Nama,
 			'Status' => $Status,
 			'Pangkat' => $Pangkat,
 			'Password' =>$password,
-			'No_Telp' =>$No_Telp,
+			'No_Telp' =>$hp,
 			'Bagian' => $Bagian,
 			'Sub_Bagian' => $Sub_Bagian,
 			'stat' => $stat,
@@ -140,6 +152,16 @@ class Admin extends CI_Controller{
 		$jabatan = $this->input->post('jabatan');
 		$stat = $this->input->post('stat');
 		
+		if(!preg_match('/[^+0-9]/',trim($No_Telp))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($No_Telp), 0, 2)=='62'){
+            $hp = trim($No_Telp);
+        }
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($No_Telp), 0, 1)=='0'){
+            $hp = '62'.substr(trim($No_Telp), 1);
+        }
+    }
 		
 		$data = array(
 			'Nama' => $Nama,
@@ -150,7 +172,7 @@ class Admin extends CI_Controller{
 			'Urusan' => $Urusan,
 			'stat' => $stat,
 			'jabatan' => $jabatan,
-			'No_Telp' => $No_Telp
+			'No_Telp' => $hp
 			
 		
 		);
@@ -177,7 +199,12 @@ class Admin extends CI_Controller{
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
 		$this->load->view('template/template_admin', $data);
 	}
-		
+	public function get_prodi_by_jurusan_js(){
+      if($this->input->post('id_jurusan'))
+      {
+      echo $this->m_admin->get_prodi_by_jurusan_js($this->input->post('id_jurusan'));
+      }
+    }	
 	function inputMahasiwa(){
 		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
 		$data['prodi'] = $this->m_admin->tampilProdi()->result();
@@ -191,14 +218,29 @@ class Admin extends CI_Controller{
 		$id_prodi = $this->input->post('id_prodi');
 		$telpon = $this->input->post('telpon');
 		$password = substr($nim, -6);
-		
+		/*if($id_jurusan=="prodi"){
+		echo $this->model_select->kabupaten($id_prodi);
+		}*/
+		if(!preg_match('/[^+0-9]/',trim($telpon))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($telpon), 0, 2)=='62'){
+            $hp = trim($telpon);
+        }elseif(substr(trim($telpon), 0, 3)=='+62'){
+            $hp = trim($telpon);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($telpon), 0, 1)=='0'){
+            $hp = '62'.substr(trim($telpon), 1);
+        }
+    }
+	
 		$data = array(
 			'nim' => $nim,
 			'nama' => $nama,
 			'id_jurusan' => $id_jurusan,
 			'id_prodi' => $id_prodi,
 			'password' =>$password,
-			'telpon' =>$telpon
+			'telpon' =>$hp
 		);
 		$this->m_admin->tambahdata($data,'mahasiswa');
 		$this->session->set_flashdata('notif', "Mahasiswa $NIM berhasil ditambahkan");
@@ -231,12 +273,23 @@ class Admin extends CI_Controller{
 		$id_jurusan = $this->input->post('id_jurusan');
 		$id_prodi = $this->input->post('id_prodi');
 		$telpon = $this->input->post('telpon');
-		
+		if(!preg_match('/[^+0-9]/',trim($telpon))){
+        // cek apakah no hp karakter 1-3 adalah +62
+        if(substr(trim($telpon), 0, 2)=='62'){
+            $hp = trim($telpon);
+        }elseif(substr(trim($telpon), 0, 3)=='+62'){
+            $hp = trim($telpon);
+		}
+        // cek apakah no hp karakter 1 adalah 0
+        elseif(substr(trim($telpon), 0, 1)=='0'){
+            $hp = '62'.substr(trim($telpon), 1);
+        }
+    }
 		$data = array(
 			'nama' => $nama,
 			'id_jurusan' => $id_jurusan,
 			'id_prodi' => $id_prodi,
-			'telpon' => $telpon	
+			'telpon' => $hp	
 		
 		);
 
@@ -263,10 +316,12 @@ class Admin extends CI_Controller{
 	}
 	function tambahPenyelenggara(){
 		$penyelenggara = $this->input->post('penyelenggara');
+		$status = $this->input->post('status');
 		$status_penyelenggara = 'aktif';
 		
 		$data = array(
 			'penyelenggara' => $penyelenggara,
+			'status' => $status,
 			'status_penyelenggara' =>$status_penyelenggara
 		);
 		$this->m_admin->tambahdata($data,'penyelenggara');
@@ -291,12 +346,14 @@ class Admin extends CI_Controller{
 	function editPenyelenggara(){
 		$id_penyelenggara = $this->input->post('id_penyelenggara');
 		$penyelenggara = $this->input->post('penyelenggara');
+		$status = $this->input->post('status');
 		$status_penyelenggara = $this->input->post('status_penyelenggara');
 		
 		$data = array(
 			'id_penyelenggara' => $id_penyelenggara,
 			'penyelenggara' => $penyelenggara,
-			'status_penyelenggara' => $status_penyelenggara
+			'status_penyelenggara' => $status_penyelenggara,
+			'status' => $status
 		);
 
 		$where = array('id_penyelenggara' => $id_penyelenggara);
@@ -1599,6 +1656,180 @@ class Admin extends CI_Controller{
 		$this->m_admin->update_data($where,$data,'ruangan');
 		$this->session->set_flashdata('notif', "Data Berhasil Di Hapus !");
 		redirect('admin/hak_akses/'.$url);
+	}
+	function lihat_jurusan(){
+		$data['main_view'] = 'admin/v_list_jurusan';
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$this->load->view('template/template_admin', $data);
+	}
+	
+	function inputJurusan(){
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['main_view'] = 'admin/v_tambah_jurusan';
+		$this->load->view('template/template_admin',$data);
+	}
+	
+	function tambahJurusan(){
+		$jurusan = $this->input->post('jurusan');
+		
+		$data = array(
+			'jurusan' => $jurusan
+		);
+		$this->m_admin->tambahdata($data,'jurusan');
+		$this->session->set_flashdata('notif', "Jurusan $jurusan berhasil ditambahkan");
+		redirect('admin/lihat_jurusan');
+	}
+	
+	function updateJurusan($id_jurusan){
+		$data['main_view'] = 'admin/v_edit_jurusan';
+		$where = array('id_jurusan' => $id_jurusan);
+		$data['jurusan'] = $this->m_admin->edit_data($where,'jurusan')->result();
+		$this->load->view('template/template_admin',$data);
+	}
+	
+	function editJurusan(){
+		$id_jurusan = $this->input->post('id_jurusan');
+		$jurusan = $this->input->post('jurusan');
+		
+		$data = array(
+			'id_jurusan' => $id_jurusan,
+			'jurusan' => $jurusan
+		);
+
+		$where = array('id_jurusan' => $id_jurusan);
+
+		$this->m_admin->update_data($where,$data,'jurusan');
+		$this->session->set_flashdata('notif', "Data jurusan $jurusan berhasil di Update");
+		redirect('admin/lihat_jurusan');
+	}
+	
+	function hapusJurusan($id_jurusan){
+		$where = array('id_jurusan' => $id_jurusan);
+		$this->m_admin->hapus_data($where,'jurusan');
+		$this->session->set_flashdata('notif', "Data penyelenggara $id_jurusan berhasil dihapus");
+		redirect('admin/lihat_jurusan');
+	}
+	
+	//CRUD prodi alvin
+	function lihat_prodi(){
+		$data['main_view'] = 'admin/v_list_prodi';
+		$data['jurusan'] = $this->m_admin->get_jurusan();
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$this->load->view('template/template_admin', $data);
+	}
+	
+	function inputProdi(){
+		$data['jurusan'] = $this->m_admin->tampilJurusan()->result();
+		$data['prodi'] = $this->m_admin->tampilProdi()->result();
+		$data['main_view'] = 'admin/v_tambah_prodi';
+		$this->load->view('template/template_admin',$data);
+	}
+	
+	function tambahProdi(){
+		$id_jurusan = $this->input->post('id_jurusan');
+		$nama_prodi = $this->input->post('nama_prodi');
+		
+		$data = array(
+			'id_jurusan' => $id_jurusan,
+			'prodi' => $nama_prodi
+		);
+		$this->m_admin->tambahdata($data,'prodi');
+		$this->session->set_flashdata('notif', "Jurusan $nama_prodi berhasil ditambahkan");
+		redirect('admin/lihat_prodi');
+	}
+	
+	function updateProdi($id_prodi){
+		$data['main_view'] = 'admin/v_edit_prodi';
+		$where = array('id_prodi' => $id_prodi);
+		$data['jurusan'] = $this->m_admin->get_jurusan();
+		$data['prodi'] = $this->m_admin->edit_data($where,'prodi')->result();
+		$this->load->view('template/template_admin',$data);
+	}
+	
+	function editProdi(){
+		$id_prodi = $this->input->post('id_prodi');
+		$id_jurusan = $this->input->post('id_jurusan');
+		$prodi = $this->input->post('nama_prodi');
+		
+		$data = array(
+			'id_prodi' => $id_prodi,
+			'id_jurusan' => $id_jurusan,
+			'prodi' => $prodi
+		);
+
+		$where = array('id_prodi' => $id_prodi);
+
+		$this->m_admin->update_data($where,$data,'prodi');
+		$this->session->set_flashdata('notif', "Data jurusan $prodi berhasil di Update");
+		redirect('admin/lihat_prodi');
+	}
+	
+	function hapusProdi($id_prodi){
+		$where = array('id_prodi' => $id_prodi);
+		$this->m_admin->hapus_data($where,'prodi');
+		$this->session->set_flashdata('notif', "Data penyelenggara $id_prodi berhasil dihapus");
+		redirect('admin/lihat_prodi');
+	}
+	
+	  public function listKota(){    // Ambil data ID Provinsi yang dikirim via ajax post    
+	  $id_jurusan = $this->input->post('id_jurusan');        
+	  $prodi = $this->m_admin->getProdi($id_jurusan);        // Buat variabel untuk menampung tag-tag option nya    // Set defaultnya dengan tag option Pilih    
+	  $lists = "<option value=''>Pilih</option>";        
+	  foreach($prodi as $data){     
+	  $lists .= "<option value='".$data->id_prodi."'>".$data->prodi."</option>"; // Tambahkan tag option ke variabel $lists   
+	  }       
+	  $callback = array('list_kota'=>$lists); // Masukan variabel lists tadi ke dalam array $callback dengan index array : list_kota   
+	  echo json_encode($callback); // konversi varibael $callback menjadi JSON
+	  }
+	  
+	function history_rutin(){
+		$data['main_view'] = 'admin/v_history_rutin';
+		$data['peminjaman'] = $this->m_admin->get_data_history_peminjam();
+		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa_peminjam();
+		$data['peminjaman_rutin'] = $this->m_admin->get_ruangan_peminjaman_rutin_peminjam();
+		//$data['detail_peminjaman_barang'] = $this->m_mahasiswa->get_barang_peminjaman_barang_by_peminjam();
+		//$data['detail_peminjaman_non_rutin'] = $this->m_mahasiswa->get_non_rutin_peminjaman_non_rutin_by_peminjam();
+		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
+			$data['dosen'] = $this->m_admin->get_data_dosen();
+		$data['dosen_peminjam'] = $this->m_admin->get_data_dosen_peminjam();
+		$data['dosen'] = $this->m_admin->get_data_dosen();
+		$this->load->view('template/template_admin',$data);
+	}
+	
+	function history_non_rutin(){
+		$data['main_view'] = 'admin/v_history_non_rutin';
+		$data['peminjaman'] = $this->m_admin->get_data_history_peminjam_non();
+		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa_peminjam();
+		$data['mahasiswa'] = $this->m_admin->get_data_mahasiswa();
+			$data['dosen'] = $this->m_admin->get_data_dosen();
+		//$data['peminjaman_rutin'] = $this->m_admin->get_ruangan_peminjaman_rutin_peminjam();
+		//$data['detail_peminjaman_barang'] = $this->m_mahasiswa->get_barang_peminjaman_barang_by_peminjam();
+		$data['detail_peminjaman_non_rutin'] = $this->m_admin->get_non_rutin_peminjaman_non_rutin_peminjam();
+		$data['dosen_peminjam'] = $this->m_admin->get_data_dosen_peminjam();
+		$data['dosen'] = $this->m_admin->get_data_dosen();
+		$this->load->view('template/template_admin',$data);
+	}
+	
+	function batal_peminjaman_rutin($id_peminjaman){
+		$where_peminjaman = array('id_peminjaman' => $id_peminjaman);
+		$where_rutin = array('id_peminjaman_rutin' => $id_peminjaman);
+		//$where_non_rutin = array('id_peminjaman_non_rutin' => $id_peminjaman);
+		//$where_barang = array('id_peminjaman_barang' => $id_peminjaman);
+		$this->m_admin->hapus_data($where_peminjaman,'peminjaman');
+		$this->m_admin->hapus_data($where_rutin,'peminjaman_rutin');
+		$this->session->set_flashdata('notif', "Peminjaman $id_peminjaman berhasil dibatalkan");
+		redirect('admin/history_rutin');
+	}
+	
+	function batal_peminjaman($id_peminjaman){
+		$where_peminjaman = array('id_peminjaman' => $id_peminjaman);
+		$where_non_rutin = array('id_peminjaman_non_rutin' => $id_peminjaman);
+		$this->m_admin->hapus_data($where_peminjaman,'peminjaman');
+		$this->m_admin->hapus_data($where_non_rutin,'peminjaman_non_rutin');
+		$this->m_admin->hapus_data($where_non_rutin,'detail_peminjaman_non_rutin');;
+		$this->session->set_flashdata('notif', "Peminjaman $id_peminjaman berhasil dibatalkan");
+		redirect('admin/history_non_rutin');
 	}
 }
 

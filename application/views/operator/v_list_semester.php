@@ -106,7 +106,7 @@
                     
                         ><?php echo $u->status ?></span></td>
                     
-                    <td><a href="<?php echo site_url('jadwal/plot_jadwal/'.$u->id_semester); ?>"  onclick="return plot();" class="btn btn-danger" title="Plot Jadwal">
+                    <td><a href="<?php echo site_url('operator/plot_jadwal/'.$u->id_semester); ?>"  onclick="return plot();" class="btn btn-danger" title="Plot Jadwal">
                             <i class="material-icons">find_replace</i> PLOT
                         </a></td>
                     <td class="sorting_1" style="">

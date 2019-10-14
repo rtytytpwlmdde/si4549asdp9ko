@@ -30,7 +30,7 @@
             </div>
             <div class="col-sm-4  text-center text-sm-right mb-0">
             <?php foreach ($peminjaman_rutin as $a){ ?>
-            <a  class="mb-2 btn btn-sm btn-outline-primary mr-1" style="max-width:100px" href="<?php echo base_url('Pdfs/save_pdf_peminjaman/'.$a->id_peminjaman_rutin.'/rutin') ?>"> <i class="material-icons">print</i> Print </a>   
+            <a class="mb-2 btn btn-sm btn-outline-primary mr-1" style="max-width:100px" href="<?php echo base_url('Pdfs/save_pdf_peminjaman/'.$a->id_peminjaman_rutin.'/rutin') ?>"> <i class="material-icons">print</i> Print </a>   
             <?php } ?>
             </div>
         </div>

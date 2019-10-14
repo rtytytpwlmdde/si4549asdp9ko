@@ -81,6 +81,7 @@
                     <th scope="col" class="">ID Penyelenggara</th>
                     <th scope="col" class="">Nama penyelenggara</th>
                     <th scope="col" class="">Status</th>
+					<th scope="col" class="">Jenis Penyelenggara</th>
                     <th scope="col" class="">Aksi</th>
                 </tr>
                 </thead>
@@ -94,6 +95,7 @@
                         <td><?php echo $u->id_penyelenggara ?></td>
                         <td><?php echo $u->penyelenggara ?></td>
                         <td><?php echo $u->status_penyelenggara ?></td>
+						<td><?php echo $u->status ?></td>
 						
                         <td class="sorting_1" style="">
                             <a href="<?php echo site_url('admin/updatePenyelenggara/'.$u->id_penyelenggara); ?>" type="button" class="btn btn-white" title="Edit Data Mahasiswa">

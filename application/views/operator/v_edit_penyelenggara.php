@@ -58,6 +58,11 @@
                                     <option value="non aktif" <?php echo ($u->status_penyelenggara=='non aktif')?'selected="selected"':''; ?>>Non Aktif</option>
                                     </select>
                                 </div>
+							</div>
+							<div class="form-group">
+                              <label for="feInputAddress">Jenis Penyelenggara</label>
+                              <input pattern="[^'\x11]+" required  name="status" type="text" class="form-control" id="feInputAddress" value="<?php echo $u->status ?>"> 
+                            </div>
                             <button type="submit" class="btn btn-accent">Update Data</button>
                           </form>
                         <?php endforeach ?>
@@ -68,7 +73,18 @@
                 </div>
               </div>
               
-       
+			<div class="col-lg-4">
+                <div class="card card-small mb-4 pt-3">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-4">
+                      <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk Jenis Penyelenggara</strong>
+                      <span>1. Penyelenggara dengan ID " 1 " digunakan untuk mahsiswa.</span><br>
+					  <span>2. Penyelenggara dengan ID " 2 " digunakan untuk Non mahsiswa.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
             </div>
 </div>
     

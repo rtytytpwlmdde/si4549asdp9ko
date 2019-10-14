@@ -125,7 +125,8 @@ class M_admin extends CI_Model{
 		return $this->db->get('mahasiswa');
 	}
 
-	function get_data_agenda_umum($date){
+	//alvin
+	function get_data_agenda_umum(){
 		$this->db->select('*');	
 		$this->db->from('peminjaman_non_rutin');
 		$this->db->order_by("peminjaman_non_rutin.tanggal_pemakaian", "ASC");
@@ -624,6 +625,15 @@ class M_admin extends CI_Model{
 		$query = $this->db->get();
 		return $query->result();
 	}	
+	
+	function get_jurusan(){
+		$this->db->select('*');	
+		$this->db->from('jurusan');
+		$this->db->order_by("jurusan", "ASC");
+		$query = $this->db->get();
+		return $query->result();
+	}	
+
 
 	function get_data_agenda(){
 		$this->db->select('*');	
@@ -715,6 +725,7 @@ class M_admin extends CI_Model{
 	function get_peminjaman_rutin_by_semester($id_semester){
 		$this->db->select('*');
 		$this->db->from('peminjaman_rutin');
+		$this->db->join('peminjaman','peminjaman.id_peminjaman = peminjaman_rutin.id_peminjaman_rutin');
 		$this->db->where('id_semester', $id_semester);
 		$this->db->order_by("tanggal_pemakaian", "DESC");
 		$this->db->where('status !=', 'tolak');
@@ -818,6 +829,7 @@ class M_admin extends CI_Model{
 	function get_data_ruangan_bagus(){
 		$this->db->select('id_ruangan,ruangan,jenis_ruangan');
 		$this->db->from('ruangan');
+		$this->db->where('ruangan.jenis_ruangan', 'rutin');
 		$this->db->where('ruangan.status', 'bagus');
 		$this->db->order_by("status", "DESC");
 		$this->db->order_by("ruangan", "ASC");
@@ -1017,6 +1029,7 @@ class M_admin extends CI_Model{
 		$this->db->join('detail_peminjaman_barang', 'peminjaman_barang.id_peminjaman_barang = detail_peminjaman_barang.id_peminjaman_barang');
 		$this->db->where('peminjaman_barang.tanggal_pemakaian',$date);
 		$this->db->where('peminjaman_barang.status !=', 'tolak');
+		$this->db->distinct();
 		$query=$this->db->get();
 		return $query->result();
 	}
@@ -1041,7 +1054,7 @@ class M_admin extends CI_Model{
 		$this->db->where('peminjaman_non_rutin.tanggal_pemakaian',$date);
 		$this->db->where('peminjaman_non_rutin.status !=', 'tolak');
 		$this->db->where('peminjaman_non_rutin.status !=', 'pending');
-		$this->db->group_by('detail_peminjaman_non_rutin.id_ruangan');
+		$this->db->distinct();
 		$query=$this->db->get();
 		return $query->result();
 	}
@@ -1714,18 +1727,19 @@ class M_admin extends CI_Model{
 	}
 	
 	function tampil_peminjaman_non_rutin(){
-	$this->db->select('ruangan.ruangan, detail_peminjaman_non_rutin.id_peminjaman_non_rutin, peminjaman_non_rutin.nip_validator, peminjaman_non_rutin.nama_agenda');
+	$this->db->select('ruangan.ruangan, detail_peminjaman_non_rutin.id_peminjaman_non_rutin, peminjaman_non_rutin.nip_validator, peminjaman_non_rutin.nama_agenda,peminjaman_non_rutin.tanggal_pemakaian');
 	$this->db->from('detail_peminjaman_non_rutin');
 	$this->db->join('peminjaman','peminjaman.id_peminjaman = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
 	$this->db->join('peminjaman_non_rutin','peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
 	$this->db->join('ruangan', 'ruangan.id_ruangan = detail_peminjaman_non_rutin.id_ruangan');
+	$this->db->distinct();
 	$this->db->distinct();
 	$query = $this->db->get();
 	return $query->result();
 	}
 	
 	function tampil_peminjaman_barang(){
-	$this->db->select(' barang.nama_barang, detail_peminjaman_barang.id_peminjaman_barang, peminjaman_barang.nip_validator, peminjaman_barang.nama_agenda');
+	$this->db->select(' barang.nama_barang, detail_peminjaman_barang.id_peminjaman_barang, peminjaman_barang.nip_validator, peminjaman_barang.nama_agenda, peminjaman_barang.tanggal_pemakaian');
 	$this->db->from('detail_peminjaman_barang');
 	$this->db->join('peminjaman','peminjaman.id_peminjaman = detail_peminjaman_barang.id_peminjaman_barang');
 	$this->db->join('peminjaman_barang','peminjaman_barang.id_peminjaman_barang = detail_peminjaman_barang.id_peminjaman_barang');
@@ -1912,4 +1926,86 @@ class M_admin extends CI_Model{
     $this->db->where('id_ruangan',$id_ruangan);
     $this->db->update('ruangan',$data);
 	}
+	
+	function getJurusan() {
+	return $this->db->get('jurusan')->result(); // Tampilkan semua data yang ada di tabel provinsi ;
+  
+	}
+  
+  /* fungsi untuk memanggil data pada table kota*/
+	function getProdi($id_jurusan) {
+	$this->db->where('id_jurusan', $id_jurusan);   
+	$result = $this->db->get('prodi')->result(); // Tampilkan semua data kota berdasarkan id provinsi        return $result; 
+	}
+	
+	public function get_prodi_by_jurusan_js($id_jurusan) {
+    $this->db->select('*');
+    $this->db->from('prodi');
+    $this->db->where('id_jurusan', $id_jurusan);
+    $this->db->order_by('prodi', 'ASC');
+    $query  = $this->db->get();
+    $output = '<option value="">Pilih Program Studi</option>';
+    foreach($query->result() as $row)
+    {
+      $output .= '<option value="'.$row->id_prodi.'">'.$row->prodi.'</option>';
+    }
+    return $output;
+  }
+  
+  function get_data_history_peminjam(){
+		$this->db->select('*');
+		$this->db->from('peminjaman');
+		$this->db->where('peminjaman.jenis_peminjaman','rutin');
+		$this->db->order_by("peminjaman.tanggal_peminjaman", "DESC");
+		$query = $this->db->get();
+		return $query->result();
+	
+	}
+	
+	function get_data_history_peminjam_non(){
+		$this->db->select('*');
+		$this->db->from('peminjaman');
+		$this->db->where('peminjaman.jenis_peminjaman','non rutin');
+		$this->db->order_by("peminjaman.tanggal_peminjaman", "DESC");
+		$query = $this->db->get();
+		return $query->result();
+	}
+	
+	function get_data_mahasiswa_peminjam(){
+		$this->db->select('*');
+		$this->db->from('mahasiswa');
+		//$this->db->where('nim',$id);
+		$query = $this->db->get();
+		return $query->result();
+	}
+
+	function get_data_dosen_peminjam(){
+		$this->db->select('*');
+		$this->db->from('pegawai');
+		//$this->db->where('NIP',$id);
+		$query = $this->db->get();
+		return $query->result();
+	}
+	
+	function get_ruangan_peminjaman_rutin_peminjam(){
+		$this->db->select('peminjaman_rutin.id_ruangan, ruangan.ruangan, peminjaman_rutin.id_peminjaman_rutin,peminjaman_rutin.nip_validator');
+		$this->db->from('peminjaman_rutin');
+		$this->db->join('ruangan', 'peminjaman_rutin.id_ruangan = ruangan.id_ruangan');
+		//$this->db->where('peminjaman_rutin.id_peminjam',$id);
+		$query=$this->db->get();
+		return $query->result();
+	}
+	
+	function get_non_rutin_peminjaman_non_rutin_peminjam(){
+		$this->db->select('ruangan.ruangan, detail_peminjaman_non_rutin.id_peminjaman_non_rutin, peminjaman_non_rutin.nip_validator');
+		$this->db->from('detail_peminjaman_non_rutin');
+		$this->db->join('peminjaman_non_rutin','peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
+		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
+		//$this->db->where('detail_peminjaman_non_rutin.id_peminjam',$id);
+		$this->db->distinct();
+		$query=$this->db->get();
+		return $query->result();
+
+	}
+
 }

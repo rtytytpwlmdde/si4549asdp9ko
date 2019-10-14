@@ -94,7 +94,17 @@
                 </div>
               </div>
               
-              
+            <div class="col-lg-4">
+                <div class="card card-small mb-4 pt-3">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item p-4">
+                      <strong class="text-muted d-block mb-2"><i class="material-icons">info_outline</i> Petunjuk</strong>
+                      <span>1. Password pegawai baru akan diambil berdasarkan 6 terakhir dari NIM.</span><br>
+					  <span>2. No Telpon menggunakan 62.</span>
+                    </li>
+                  </ul>
+                </div>
+              </div> 
             </div>
 </div>
     

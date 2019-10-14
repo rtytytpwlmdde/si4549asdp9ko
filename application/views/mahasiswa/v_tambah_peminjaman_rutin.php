@@ -99,7 +99,7 @@
                           <div class="form-row">
                                 <div class="form-group col-md-4">
                                 <label for="feInputAddress">Jurusan</label>
-                                    <select required  name="id_jurusan" id="feInputState" class="form-control">
+                                    <select required  name="id_jurusan" id="jurusan" class="form-control">
                                     <option value="" selected>Pilih </option>
                                     <?php foreach($jurusan as $u ){ ?>
                                     <option value="<?php echo $u->id_jurusan;?>"><?php echo $u->jurusan;     ?></option> 
@@ -108,12 +108,9 @@
                                 </div>
                                 <div class="form-group col-md-4">
                                     <label for="feInputAddress">Program Studi</label>
-                                        <select required  name="id_prodi" id="feInputState" class="form-control">
-                                        <option value="" selected>Pilih </option>
-                                        <?php foreach($prodi as $u ){ ?>
-                                        <option value="<?php echo $u->id_prodi;?>"><?php echo $u->prodi;     ?></option> 
-                                        <?php } ?>
-                                    </select>
+                                          <select class="form-control" id="prodi" name="id_prodi" >
+										<option value=""selected disabled>Pilih Program Studi</option>
+										</select>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-accent">Submit</button>
@@ -125,6 +122,31 @@
                 </div>
               </div> 
             </div>
+			<script>
+
+  $(document).ready(function(){
+
+    $('#jurusan').change(function(){
+      var e = document.getElementById ("jurusan");
+      var id_jurusan = e.options [e.selectedIndex] .value;
+      console.log(id_jurusan)
+      if(id_jurusan != '')
+      {
+        $.ajax({
+          url:"<?php echo site_url();?>/mahasiswa/get_prodi_by_jurusan_js",
+          method: "POST",
+          data:{id_jurusan:id_jurusan},
+          success:function(data)
+          {
+            $('#prodi').html(data);
+          }
+        })
+      }
+    })
+   
+  })
+
+</script>
 </div>
     
 

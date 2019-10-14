@@ -1,8 +1,26 @@
+<script>
+   function printlayer(layer){
+       var generator=window.open(",'name,");
+       var layetext = document.getElementById(layer);
+       generator.document.write(layetext.innerHTML.replace("Print Me"));
+       generator.document.close();
+       generator.print();
+       generator.close();
+   }
+   </script>
 <!doctype html>
 <html>
-  <body style="">
-    <div style="margin: 0; padding: 0;background: #fff; width: 21cm; height: 29.7cm; font-family:calibri;">
-    <div style="padding-left:80px; padding-top:40px; padding-right:80px;" >
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+</head>
+  <body style=""> <a href="" id="print" onclick="javascript:printlayer('div-id-name')">Klik disini untuk mencetak</a>
+    <div  id="div-id-name">
+    <div  >
         <div class="bg-white py-4">
         <div class=" pt-0">
             <div style="">
@@ -17,7 +35,7 @@
                     <div style="font-weight:bold">FAKULTAS EKONOMI DAN BISNIS</div>
                     <div style="font-size:12px;">Jl. MT. Haryono 165 Malang, 65145, Indonesia</div>
                     <div style="font-size:12px;">Telp. : +62-341-555000; Fax : +341-553834</div>
-                    <div style="font-size:12px; ">http://feb.ub.ac.id/  <span style="color:#fff;">aaa</span> E-mail : feb@ub.ac.id</div>
+                    <div style="font-size:12px; ">http://feb.ub.ac.id  E-mail : feb@ub.ac.id</div>
                     </td>
                     </tr>
                     </thead>
@@ -34,30 +52,50 @@
                     ?>
                     <thead >
                         <tr>
-                        <td>
-                           <div>NIM/NIK<span style="color:#fff;">aaaaaaaaa</span>: <?php echo $u->id_peminjam ?></div>
-                           <div>Nama<span style="color:#fff;">aaaaaaaaaaaa</span>: 
-                           <?php foreach ($dosen as $a){if ($a->NIP == $u->id_peminjam) :echo $a->Nama;endif;}  ?>
-                           <?php foreach ($mahasiswa as $a){if ($a->nim == $u->id_peminjam) :echo $a->nama;endif;}  ?>
-                           </div>
-                           <div>Program Studi <span style="color:#fff;">aaaa</span>: <?php foreach ($prodi as $a){if ($a->id_prodi == $u->id_prodi) :echo $a->prodi;endif;}  ?></div>
-                           <div>Jurusan<span style="color:#fff;">aaaaaiaaaaa</span>: <?php foreach ($jurusan as $a){if ($a->id_jurusan == $u->id_jurusan) :echo $a->jurusan;endif;}  ?></div>
-                           
-
-                        <td style="padding-left:2cm; text-align: left;">
-                           <div>Jenis Peminjaman<span style="color:#fff;">aaa</span>: Rutin</div>
-                           <div>Tanggal Pemakaian<span style="color:#fff;">a</span>: <?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "d/m/Y") ; ?></div>
-                           <div>Jam <span style="color:#fff;">aaaaaaaaa''a'aaa</span>: <?php foreach ($jam_kuliah as $a){if ($a->id_jam_kuliah == $u->id_jam_kuliah) :echo $a->jam_kuliah;endif;}  ?></div>
-                           <div>Status<span style="color:#fff;">aaaiaaaaaaaaa</span>: <?php echo $u->status ?></div>
-                        </td>
+                            <td>NIM/NIK</td>
+                            <td>: <?php echo $u->id_peminjam ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Jenis Peminjaman </td>
+                            <td>: Rutin</td>
                         </tr>
+                        <tr>
+                            <td>Nama</td>
+                            <td>: <?php foreach ($dosen as $a){if ($a->NIP == $u->id_peminjam) :echo $a->Nama;endif;}  ?>
+                           <?php foreach ($mahasiswa as $a){if ($a->nim == $u->id_peminjam) :echo $a->nama;endif;}  ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Tanggal Pemakaian </td>
+                            <td>: <?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "d/m/Y") ; ?></td>
+                        </tr>
+                        <tr>
+                            <td>Program Studi</td>
+                            <td>: <?php foreach ($prodi as $a){if ($a->id_prodi == $u->id_prodi) :echo $a->prodi;endif;}  ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Jenis Peminjaman </td>
+                            <td>: Kelas</td>
+                        </tr>
+                        <tr>
+                            <td>Jurusan</td>
+                            <td>: <?php foreach ($jurusan as $a){if ($a->id_jurusan == $u->id_jurusan) :echo $a->jurusan;endif;}  ?></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Jam </td>
+                            <td>: <?php foreach ($jam_kuliah as $a){if ($a->id_jam_kuliah == $u->id_jam_kuliah) :echo $a->jam_kuliah;endif;}  ?></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="padding-left:4cm;"></td>
+                            <td>Status </td>
+                            <td>: <?php echo $u->status ?></td>
+                        </tr>
+                        
                      
                     </thead>
                     <tbody>
                     </tbody>
                     <?php } ?>
                 </table>
-
+                
+                
 
                 <p>Ruangan : </p>
                 <table style="border-collapse: collapse;width: 100%; text-align:center; " border="1">

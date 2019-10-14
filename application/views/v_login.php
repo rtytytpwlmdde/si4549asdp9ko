@@ -75,17 +75,6 @@
               <div hidden class="col-lg-6 col-md-6 ">
                 <div class="px-4 py-3">
                     <h1>USER LOGIN</h1>
-                  <div class="text-white ">
-                        <p>admin = u:  admin  ||  p:  admin</p>
-                        <p>operator = u:  operator  ||  p:  operator</p>
-                        <p>validator rutin = u: validator_rutin, p: validator_rutin</p>
-                        <p>validator non_ rutin = u: validator_non_rutin, p: validator_non_rutin</p>
-                        <p>validator barang = u: validator_barang, p: validator_barang</p>
-                        <p>validator khusus = u: validator_khusus, p: validator_khusus</p>
-                        <p>staff = u:  2009088608171001, p:  171001</p>
-                        <p>dosen = u:  195503221981031002, p:  31002</p>
-                        <p>mahasiswa = u:  15510815261612, p:  261612</p>
-                  </div><br>
                   <div class=" border-top">
                   <div class="auth-form__meta d-flex mt-4">
                   <a href="<?php echo base_url().'auth/lupa_password'; ?>">Lupa password?</a><br>

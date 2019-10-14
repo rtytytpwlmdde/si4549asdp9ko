@@ -56,6 +56,7 @@
                         <th scope="col" class="">Jenis</th>
                         <th scope="col" class="">Catatan</th>
                         <th scope="col" class="">Status</th>
+                        <th scope="col" class="">Status Wakil Dekan</th>
 						<th scope="col" class="">Nama Validator</th>
                     </tr>
                     </thead>
@@ -97,7 +98,24 @@
                                 <?php } else{ ?>
                                     class="text-secondary"
                                 <?php } ?>
-                            ><?php echo $u->status_peminjaman ?></span>
+                            ><?php 
+								echo $u->status_peminjaman;
+							?></span>
+                        </td>
+						 <td>
+                            <span 
+                                <?php if($u->status_peminjaman_wakadek == 'terkirim'){ ?>
+                                    class="text-warning"
+                                <?php }else if($u->status_peminjaman_wakadek == 'tolak'){ ?>
+                                    class="text-danger"
+                                <?php }else if($u->status_peminjaman_wakadek == 'setuju'){ ?>
+                                    class="text-success"
+                                <?php } else{ ?>
+                                    class="text-secondary"
+                                <?php } ?>
+                            ><?php 
+								echo $u->status_peminjaman_wakadek;
+							?></span>
                         </td>
 						<td> 
                             <?php if ($u->jenis_peminjaman == 'rutin'){ 

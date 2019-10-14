@@ -90,9 +90,9 @@
                                 ?> - 
                                 <?php
                                 if (strlen($pnr->jam_selesai_peminjaman) == 1){
-                                    echo "0".$pnr->jam_selesai_peminjaman.":00"; 
+                                    echo "0".$pnr->jam_selesai_peminjaman.":59"; 
                                 }else{
-                                    echo $pnr->jam_selesai_peminjaman.":00"; 
+                                    echo $pnr->jam_selesai_peminjaman.":59"; 
                                 } 
                                     ?>
                         </td>

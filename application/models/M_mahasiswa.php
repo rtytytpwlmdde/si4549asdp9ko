@@ -224,6 +224,7 @@ class M_mahasiswa extends CI_Model{
 		$this->db->select('*');
 		$this->db->select('detail_peminjaman_non_rutin.id_peminjaman_non_rutin as id_pem');
 		$this->db->from('detail_peminjaman_non_rutin');
+		$this->db->join('ruangan','ruangan.id_ruangan = detail_peminjaman_non_rutin.id_ruangan');
 		$this->db->where('id_peminjaman_non_rutin',$id);
 		$this->db->group_by('detail_peminjaman_non_rutin.id_ruangan');
 		$query = $this->db->get();
@@ -407,5 +408,19 @@ class M_mahasiswa extends CI_Model{
 		$hasil=$this->db->query("SELECT * FROM barang WHERE id_jenis_barang='$id'");
 		return $hasil->result();
 	}
+	
+	public function get_prodi_by_jurusan_js($id_jurusan) {
+    $this->db->select('*');
+    $this->db->from('prodi');
+    $this->db->where('id_jurusan', $id_jurusan);
+    $this->db->order_by('prodi', 'ASC');
+    $query  = $this->db->get();
+    $output = '<option value="">Pilih Program Studi</option>';
+    foreach($query->result() as $row)
+    {
+      $output .= '<option value="'.$row->id_prodi.'">'.$row->prodi.'</option>';
+    }
+    return $output;
+  }
 
 }
