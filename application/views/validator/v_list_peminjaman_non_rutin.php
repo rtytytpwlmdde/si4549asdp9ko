@@ -1,4 +1,8 @@
  <!-- / .main-navbar -->
+ <?php 
+header("Cache-Control: max-age=300, must-revalidate"); 
+?>
+
  <div class="main-content-container container-fluid ">
  <!-- alert -->
  <?php

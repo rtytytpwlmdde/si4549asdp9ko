@@ -1379,7 +1379,7 @@ class Validator extends CI_Controller{
 					$jam_selesai_rutin[$i] = 14;
 				}elseif($jam_kuliah[$i] == 4){
 					$jam_mulai_rutin[$i] = 16;
-					$jam_selesai_rutin[$i] = 16;
+					$jam_selesai_rutin[$i] = 17;
 				}else{
 					$jam_mulai_rutin[$i] = 19;
 					$jam_selesai_rutin[$i] = 20;

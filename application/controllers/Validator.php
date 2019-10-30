@@ -1631,7 +1631,7 @@ class Validator extends CI_Controller{
 
 				if($result_non_rutin > 0 ){
 					$this->session->set_flashdata('notif', "GAGAL! Ruangan Digunakan Sudah Digunakan Pada Jam tersebut ");
-					redirect('mahasiswa/input_ruangan_peminjaman_non_rutin/'.$id_peminjaman_non_rutin);
+					redirect('validator/input_ruangan_peminjaman_non_rutin/'.$id_peminjaman_non_rutin);
 				}else{
 					$id_jam_non_rutin=0;
 					for($z = $jam_mulai_pemakaian; $z <= $jam_selesai_pemakaian; $z++){
@@ -1674,7 +1674,7 @@ class Validator extends CI_Controller{
 								'id_jam_kuliah' => $id_jam_non_rutin
 							);
 							$this->m_admin->tambahdata($data,'detail_peminjaman_non_rutin');
-						}elseif($z==16 ){
+						}elseif($z==17 ){
 							if($j_ruangan == 'rutin'){
 								$id_jam_non_rutin=4;
 							}else{
@@ -1893,7 +1893,7 @@ class Validator extends CI_Controller{
 
 				if($result_non_rutin > 0 ){
 					$this->session->set_flashdata('notif', "GAGAL! Ruangan Digunakan Sudah Digunakan Pada Jam tersebut ");
-					redirect('mahasiswa/input_ruangan_peminjaman_khusus/'.$id_peminjaman_non_rutin);
+					redirect('validator/input_ruangan_peminjaman_khusus/'.$id_peminjaman_non_rutin);
 				}else{
 					$id_jam_non_rutin=0;
 					for($z = $jam_mulai_pemakaian; $z <= $jam_selesai_pemakaian; $z++){
