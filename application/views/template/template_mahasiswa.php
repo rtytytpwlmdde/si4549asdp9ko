@@ -62,15 +62,10 @@
     <ul class="navbar-nav mr-auto px-3">
       <li class="nav-item active">
         <a class="nav-link text-white" href="<?php echo base_url('mahasiswa/peta_jadwal_kuliah'); ?>"><i class="material-icons">airplay</i> Jadwal Kuliah</a>
-      </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="material-icons">event</i> Agenda
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('mahasiswa/list_agenda_umum'); ?>">Agenda Umum</a>
-          <a class="dropdown-item" href="<?php echo base_url('mahasiswa/list_agenda_akademik'); ?>">Agenda Akademik</a>
-        </div>
+      </li> 
+      
+      <li class="nav-item active">
+        <a class="nav-link text-white" href="<?php echo base_url('mahasiswa/list_agenda_umum'); ?>"><i class="material-icons">event</i> Agenda</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -103,8 +98,8 @@
              <span class="d-md-inline-block text-white"><i class="material-icons">person </i><?php echo $this->session->userdata('nama_login'); ?></span>
           </a>
           <div class="dropdown-menu dropdown-menu-small text-white">
-          <a class="dropdown-item" href="<?php echo base_url('mahasiswa/profil/'.$this->session->userdata('username')); ?>"><i class="material-icons"></i> Update Profil</a>
-          <a class="dropdown-item" href="<?php echo base_url('auth/logout'); ?>"><i class="material-icons"></i> Logout</a>
+          <a class="dropdown-item" href="<?php echo base_url('mahasiswa/profil/'.$this->session->userdata('username')); ?>"> Update Profil</a>
+          <a class="dropdown-item" href="<?php echo base_url('auth/logout'); ?>"> Logout</a>
             
           </div>
         </li>

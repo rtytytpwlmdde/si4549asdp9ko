@@ -61,14 +61,9 @@
       <li class="nav-item active">
         <a class="nav-link text-white" href="<?php echo base_url('guest/peta_jadwal_kuliah'); ?>"><i class="material-icons">airplay</i> Jadwal Kuliah</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="material-icons">event</i> Agenda
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('guest/list_agenda_umum'); ?>">Agenda Umum</a>
-          <a class="dropdown-item" href="<?php echo base_url('guest/list_agenda_akademik'); ?>">Agenda Akademik</a>
-        </div>
+      
+      <li class="nav-item active">
+        <a class="nav-link text-white" href="<?php echo base_url('guest/list_agenda_umum'); ?>"><i class="material-icons">event</i> Agenda</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -35,28 +35,44 @@
         </div>
         <div class="">
         <div class="row border-bottom  py-1">
-            <div class="col-sm-3 text-center text-sm-left mb-0">
-               
-            <form action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> 
-                        <div class="btn-group " >
-                            <input id="search_inp" name="search" class="input-sm form-control"  placeholder="Search id, tgl, agenda"  type="text" value="<?= $search?>" >
-                            <button type="submit" class="btn btn-sm btn-primary text-white"><i class="fas fa-search"></i> </button>
+            <div class="col-sm-6 text-center text-sm-left mb-0">
+                <form action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> 
+                    <div class="btn-group " >
+                        <input id="search_inp" name="cari"  class="custom-select-sm input-sm form-control"  placeholder="Search id, tgl, agenda"  type="text" value="" >
+                        <input type="date" name="tglMulai" class="custom-select custom-select-sm" >
+                        - 
+                        <input type="date" name="tglSelesai" class="custom-select custom-select-sm" >
+
+                        <input type="submit" name="searchSubmit" class="btn btn-sm btn-secondary" value="Search">
+                    </div>
+                </form>
+                    
+            </div>
+            <div class="col  text-center text-sm-right mb-0">
+            
+                <div class="btn-group">
+                    <form action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> 
+                        <input type="submit" name="semuaSubmit" class="input-group-append form-control btn btn-primary dropdown-toggle" value="Semua"> 
+                    </form>
+                    <button type="button" class="input-group-append form-control btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="material-icons">tune</i>
+                    </button>
+                        <div class="dropdown-menu dropdown-menu-right">
+                            <form class="dropdown-item" action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> 
+                                <input hidden type="text" name="cari" value="setuju"> 
+                                <input type="submit" name="searchSubmit" class="btn btn-sm btn-success text-white" value="Setuju"> 
+                            </form>
+                            <form class="dropdown-item" action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> 
+                                <input hidden type="text" name="cari" value="terkirim"> 
+                                <input type="submit" name="searchSubmit" class="btn btn-sm btn-warning text-white" value="Terkirim"> 
+                            </form>
+                            <form class="dropdown-item" action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> 
+                                <input hidden type="text" name="cari" value="tolak"> 
+                                <input type="submit" name="searchSubmit" class="btn btn-sm btn-danger text-white" value="Tolak"> 
+                            </form>
                         </div>
-                    </form>
-            </div>
-            <div class="col  text-center text-sm-right mb-0"> 
-            <div class="btn-group " >
-                    <form action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> <input name="status" hidden value="setuju"> 
-                        <button type="submit" class="btn btn-sm btn-success text-white">Setuju </button>
-                    </form>
-                    <form action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> <input name="status" hidden value="terkirim"> 
-                        <button type="submit" class="btn btn-sm btn-warning text-white">Terikirim </button>
-                    </form>
-                    <form action="<?php echo base_url('validator/peminjaman_non_rutin/'); ?>" method="post"> <input name="status" hidden value="tolak"> 
-                        <button type="submit" class="btn btn-sm btn-danger text-white">Tolak </button>
-                    </form>
+                    </div>
                 </div>
-            </div>
             </div>
         </div>
         <div class=" pt-0 py-1">

@@ -66,8 +66,7 @@
                 </a>
                 <div class="dropdown-menu dropdown-menu-small">
                   <a class="dropdown-item " href="<?php echo base_url('jadwal/peta_jadwal_kuliah'); ?>">Jadwal Kuliah</a>
-                  <a class="dropdown-item " href="<?php echo base_url('admin/list_agenda_umum'); ?>">Agenda Umum</a>
-                  <a class="dropdown-item " href="<?php echo base_url('admin/list_agenda_akademik'); ?>">Agenda Akademik</a>
+                  <a class="dropdown-item " href="<?php echo base_url('admin/list_agenda_umum'); ?>">Agenda</a>
                 </div>
               </li>
             </ul>

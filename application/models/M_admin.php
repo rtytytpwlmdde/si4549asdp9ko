@@ -127,12 +127,27 @@ class M_admin extends CI_Model{
 
 	//alvin
 	function get_data_agenda_umum(){
+		$search = $this->input->get("query");
+		$tglMulai = $this->input->get("tglMulai");
+		$tglSelesai = $this->input->get("tglSelesai");
 		$this->db->select('*');	
 		$this->db->from('peminjaman_non_rutin');
+		$this->db->join('penyelenggara','penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
 		$this->db->order_by("peminjaman_non_rutin.tanggal_pemakaian", "ASC");
 		$this->db->where('peminjaman_non_rutin.status', 'setuju');
-		$this->db->where('peminjaman_non_rutin.kategori','umum');
 		$this->db->where('peminjaman_non_rutin.tanggal_pemakaian >= NOW() + INTERVAL -1 DAY');
+		if($search != null){
+			$this->db->like('peminjaman_non_rutin.nama_agenda', $search);
+			$this->db->or_like('penyelenggara.penyelenggara', $search);
+		}
+		if($tglMulai != null){
+			if($tglSelesai != null){
+				$this->db->where('peminjaman_non_rutin.tanggal_pemakaian >= ', $tglMulai);
+				$this->db->where('peminjaman_non_rutin.tanggal_pemakaian <= ', $tglSelesai);
+			}else{
+				$this->db->where('peminjaman_non_rutin.tanggal_pemakaian', $tglMulai);
+			}
+		}
 		$query = $this->db->get();
 		return $query->result();
 	}

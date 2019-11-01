@@ -103,8 +103,24 @@ class Mvalidator extends CI_Model{
 	}
 	
 	function get_all_data_peminjaman_non_rutin($number,$offset){
-		$status = $this->input->post('status'); //alvin
-		$search = $this->input->post('search'); //alvin
+		$semua = 0;
+		if (isset($_POST['semuaSubmit'])) {
+			$semua = 1;
+		}
+		if (isset($_POST['searchSubmit'])) {
+			$search = $this->input->post('cari');
+			$tglMulai = $this->input->post('tglMulai');
+			$tglSelesai = $this->input->post('tglSelesai');
+			// se session userdata untuk pencarian, untuk paging pencarian
+			$this->session->set_userdata('sess_ringkasan', $search);
+			$this->session->set_userdata('sess_tglMulai', $tglMulai);
+			$this->session->set_userdata('sess_tglSelesai', $tglSelesai);
+		}
+		else {
+				$search = $this->session->userdata('sess_ringkasan');
+				$tglMulai = $this->session->userdata('sess_tglMulai');
+				$tglSelesai = $this->session->userdata('sess_tglSelesai');
+		}
 		$akses = $this->session->userdata('username'); //alvin
 		$this->db->select('peminjaman_non_rutin.*' );
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
@@ -112,87 +128,113 @@ class Mvalidator extends CI_Model{
 		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
 		$this->db->where('ruangan.username', $akses);
-		if($status != null){
-			$this->db->where('peminjaman_non_rutin.status', $status);
-		}
-		if($search != null){
+		if($search != null && $semua != 1){
 			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
 			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
 			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
-			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
-				$mulai = explode("-", $search);
-				$tahun = $mulai[2];
-				$bulan = $mulai[1];
-				$tanggal = $mulai[0];
-				$tgl = $tahun."-".$bulan."-".$tanggal;
-				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
-				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
-			} 
+			$this->db->or_like('peminjaman.status_peminjaman', $search);
+			$this->db->or_like('peminjaman_non_rutin.status_wakadek', $search);
+			$this->db->or_like('peminjaman.jenis_peminjaman', $search);
 		}
+		if($tglSelesai != null && $semua != 1){
+			$this->db->where('peminjaman_non_rutin.tanggal_pemakaian >= ', $tglMulai);
+			$this->db->where('peminjaman_non_rutin.tanggal_pemakaian <= ', $tglSelesai);
+		}else{
+			$this->db->where('peminjaman_non_rutin.tanggal_pemakaian', $tglMulai);
+		}
+		$this->db->order_by('peminjaman_non_rutin.tanggal_peminjaman','desc');
 		$this->db->distinct();
 		$query = $this->db->get('peminjaman_non_rutin',$number,$offset);
 		return $query->result();
 	}
 
 	//alvin
-	function get_all_data_peminjaman_non_rutin_wakadek($number,$offset){
-		$status = $this->input->post('status'); //alvin
-		$search = $this->input->post('search'); //alvin
+	function get_all_data_peminjaman_non_rutin_wakadek($number,$offset){	$semua = 0;
+		if (isset($_POST['semuaSubmit'])) {
+			$semua = 1;
+		}
+		if (isset($_POST['searchSubmit'])) {
+			$search = $this->input->post('cari');
+			$tglMulai = $this->input->post('tglMulai');
+			$tglSelesai = $this->input->post('tglSelesai');
+			// se session userdata untuk pencarian, untuk paging pencarian
+			$this->session->set_userdata('sess_ringkasan', $search);
+			$this->session->set_userdata('sess_tglMulai', $tglMulai);
+			$this->session->set_userdata('sess_tglSelesai', $tglSelesai);
+		}
+		else {
+			$search = $this->session->userdata('sess_ringkasan');
+			$tglMulai = $this->session->userdata('sess_tglMulai');
+			$tglSelesai = $this->session->userdata('sess_tglSelesai');
+		}
 		$this->db->select('*');
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
 		$this->db->join('penyelenggara', 'penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
 		$this->db->where('peminjaman_non_rutin.status !=','pending');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
 		$this->db->where('penyelenggara.status', '1');
-		if($status != null){
-			$this->db->where('peminjaman_non_rutin.status', $status);
-		}
-		if($search != null){
+		if($search != null && $semua != 1){
 			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
 			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
 			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
-			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
-				$mulai = explode("-", $search);
-				$tahun = $mulai[2];
-				$bulan = $mulai[1];
-				$tanggal = $mulai[0];
-				$tgl = $tahun."-".$bulan."-".$tanggal;
-				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
-				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
-			} 
+			$this->db->or_like('peminjaman.status_peminjaman', $search);
+			$this->db->or_like('peminjaman_non_rutin.status_wakadek', $search);
+			$this->db->or_like('peminjaman.jenis_peminjaman', $search);
+		
 		}
+		if($tglSelesai != null && $semua != 1){
+			$this->db->where('peminjaman.tanggal_pemakaian >=', $tglMulai);
+			$this->db->where('peminjaman.tanggal_pemakaian <= ', $tglSelesai);
+		}else{
+			$this->db->where('peminjaman.tanggal_pemakaian', $tglMulai);
+		}
+		$this->db->order_by('peminjaman_non_rutin.tanggal_peminjaman','desc');
 		$this->db->distinct();
 		$query = $this->db->get('peminjaman_non_rutin',$number,$offset);
 		return $query->result();
 	}
 
-	function jumlah_data(){
-		$status = $this->input->post('status'); //alvin
-		$search = $this->input->post('search'); //alvin
+	function jumlah_data(){	
+		$semua = 0;
+		if (isset($_POST['semuaSubmit'])) {
+			$semua = 1;
+		}
+		if (isset($_POST['searchSubmit'])) {
+		$search = $this->input->post('cari');
+			$tglMulai = $this->input->post('tglMulai');
+			$tglSelesai = $this->input->post('tglSelesai');
+		// se session userdata untuk pencarian, untuk paging pencarian
+		$this->session->set_userdata('sess_ringkasan', $search);
+			$this->session->set_userdata('sess_tglMulai', $tglMulai);
+			$this->session->set_userdata('sess_tglSelesai', $tglSelesai);
+		}
+		else {
+			$search = $this->session->userdata('sess_ringkasan');
+			$tglMulai = $this->session->userdata('sess_tglMulai');
+			$tglSelesai = $this->session->userdata('sess_tglSelesai');
+		}
 		$akses = $this->session->userdata('username'); //alvin
-		$this->db->select('peminjaman_non_rutin.id_peminjaman_non_rutin');
+		$this->db->select('peminjaman_non_rutin.*' );
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
 		$this->db->join('detail_peminjaman_non_rutin', 'peminjaman_non_rutin.id_peminjaman_non_rutin = detail_peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->join('ruangan', 'detail_peminjaman_non_rutin.id_ruangan = ruangan.id_ruangan');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
 		$this->db->where('ruangan.username', $akses);
-		if($status != null){
-			$this->db->where('peminjaman_non_rutin.status', $status);
-		}
-		if($search != null){
+	
+		if($search != null && $semua != 1){
 			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
 			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
 			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
-			
-			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
-				$mulai = explode("-", $search);
-				$tahun = $mulai[2];
-				$bulan = $mulai[1];
-				$tanggal = $mulai[0];
-				$tgl = $tahun."-".$bulan."-".$tanggal;
-				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
-				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
-			} 
+			$this->db->or_like('peminjaman.status_peminjaman', $search);
+			$this->db->or_like('peminjaman_non_rutin.status_wakadek', $search);
+			$this->db->or_like('peminjaman.jenis_peminjaman', $search);
+		
+		}
+		if($tglSelesai != null && $semua != 1){
+			$this->db->where('peminjaman.tanggal_peminjaman >= ', $tglMulai);
+			$this->db->where('peminjaman.tanggal_peminjaman <= ', $tglSelesai);
+		}else{
+			$this->db->where('peminjaman.tanggal_peminjaman', $tglMulai);
 		}
 		$this->db->distinct('');
 		$query = $this->db->get('peminjaman_non_rutin');
@@ -200,31 +242,47 @@ class Mvalidator extends CI_Model{
 	}
 
 	//alvin
-	function jumlah_data_wakadek(){
-		$status = $this->input->post('status'); //alvin
-		$search = $this->input->post('search'); //alvin
+	function jumlah_data_wakadek(){	$semua = 0;
+		if (isset($_POST['semuaSubmit'])) {
+			$semua = 1;
+		}
+		if (isset($_POST['searchSubmit'])) {
+			$search = $this->input->post('cari');
+			$tglMulai = $this->input->post('tglMulai');
+			$tglSelesai = $this->input->post('tglSelesai');
+			// se session userdata untuk pencarian, untuk paging pencarian
+			$this->session->set_userdata('sess_ringkasan', $search);
+			$this->session->set_userdata('sess_tglMulai', $tglMulai);
+			$this->session->set_userdata('sess_tglSelesai', $tglSelesai);
+			}
+			else {
+				$search = $this->session->userdata('sess_ringkasan');
+			$tglMulai = $this->session->userdata('sess_tglMulai');
+			$tglSelesai = $this->session->userdata('sess_tglSelesai');
+			}
 		$this->db->select('peminjaman_non_rutin.id_peminjaman_non_rutin');
 		$this->db->join('peminjaman', 'peminjaman_non_rutin.id_peminjaman_non_rutin = peminjaman.id_peminjaman');
 		$this->db->join('penyelenggara', 'penyelenggara.id_penyelenggara = peminjaman_non_rutin.penyelenggara');
 		$this->db->where('peminjaman_non_rutin.status !=','pending');
 		$this->db->where('peminjaman.jenis_peminjaman', 'non rutin');
 		$this->db->where('penyelenggara.status', '1');
-		if($status != null){
-			$this->db->where('peminjaman_non_rutin.status', $status);
-		}
-		if($search != null){
+	
+		if($search != null && $semua != 1){
 			$this->db->like('peminjaman_non_rutin.id_peminjaman_non_rutin', $search);
 			$this->db->or_like('peminjaman_non_rutin.id_peminjam', $search);
 			$this->db->or_like('peminjaman_non_rutin.nama_agenda', $search);
-			if (preg_match("/^(0[1-9]|[1-2][0-9]|3[0-1])-(0[1-9]|1[0-2])-[0-9]{4}$/",$search)) {
-				$mulai = explode("-", $search);
-				$tahun = $mulai[2];
-				$bulan = $mulai[1];
-				$tanggal = $mulai[0];
-				$tgl = $tahun."-".$bulan."-".$tanggal;
-				$this->db->or_like('peminjaman_non_rutin.tanggal_peminjaman', $tgl);
-				$this->db->or_like('peminjaman_non_rutin.tanggal_pemakaian', $tgl);
-			} 
+			$this->db->or_like('peminjaman.status_peminjaman', $search);
+			$this->db->or_like('peminjaman_non_rutin.status_wakadek', $search);
+			$this->db->or_like('peminjaman.jenis_peminjaman', $search);
+		
+		}
+		if($tglMulai != null && $semua != 1){
+			if($tglSelesai != null){
+				$this->db->where('peminjaman.tanggal_peminjaman >= ', $tglMulai);
+				$this->db->where('peminjaman.tanggal_peminjaman <= ', $tglSelesai);
+			}else{
+				$this->db->where('peminjaman.tanggal_peminjaman', $tglMulai);
+			}
 		}
 		$this->db->distinct();
 		$query = $this->db->get('peminjaman_non_rutin');
@@ -491,4 +549,6 @@ class Mvalidator extends CI_Model{
 		return $query->result();
 
 	}
+
+
 }

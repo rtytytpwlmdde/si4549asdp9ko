@@ -61,14 +61,8 @@
       <li class="nav-item active">
         <a class="nav-link text-white" href="<?php echo base_url('validator/peta_jadwal_kuliah'); ?>"><i class="material-icons">airplay</i> Jadwal Kuliah</a>
       </li>
-      <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        <i class="material-icons">event</i> Agenda
-        </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="<?php echo base_url('validator/list_agenda_umum'); ?>">Agenda Umum</a>
-          <a class="dropdown-item" href="<?php echo base_url('validator/list_agenda_akademik'); ?>">Agenda Akademik</a>
-        </div>
+      <li class="nav-item active">
+        <a class="nav-link text-white" href="<?php echo base_url('validator/list_agenda_umum'); ?>"><i class="material-icons">event</i> Agenda</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle text-white" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -115,7 +109,7 @@
       <?php } else if($this->session->userdata('status') == 'validator_barang'){ ?>
         <li class="nav-item">
           <a href="<?php echo base_url('validator/inputPeminjamanBarang'); ?>" class="nav-link  text-white"><i class="material-icons">view_list</i> Peminjaman Barang</a>
-        </li
+      </li>
 		<li class="nav-item">
           <a href="<?php echo base_url('validator/peminjaman_barang'); ?>" class="nav-link  text-white"><i class="material-icons">view_list</i> List Peminjaman Barang</a>
         </li>
@@ -137,8 +131,8 @@
             <img class="user-avatar rounded-circle mr-2" > <span class="d-md-inline-block text-white"><i class="material-icons">person </i><?php echo $this->session->userdata('username'); ?></span>
           </a>
           <div class="dropdown-menu dropdown-menu-small text-white">
-          <a class="dropdown-item" href="<?php echo base_url('validator/profil/'.$this->session->userdata('username')); ?>"><i class="material-icons"></i> Update Profil</a>
-          <a class="dropdown-item" href="<?php echo base_url('auth/logout'); ?>"><i class="material-icons"></i> Logout</a>
+          <a class="dropdown-item" href="<?php echo base_url('validator/profil/'.$this->session->userdata('username')); ?>"> Update Profil</a>
+          <a class="dropdown-item" href="<?php echo base_url('auth/logout'); ?>"> Logout</a>
           
           </div>
         </li>

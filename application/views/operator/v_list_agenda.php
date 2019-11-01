@@ -1,6 +1,7 @@
-<style>
- 
- </style>
+ <!-- / .main-navbar -->
+ <?php 
+header("Cache-Control: max-age=300, must-revalidate"); 
+?>
  
  <!-- / .main-navbar -->
  <div class="main-content-container container-fluid px-4">
@@ -22,50 +23,18 @@
    
     <!-- Page Header -->
     <div class="page-header row no-gutters py-4">
-        <div class="col-12 col-sm-6 text-center text-sm-left mb-4 mb-sm-0">
+        <div class="col-12 col-sm-5 text-center text-sm-left mb-4 mb-sm-0">
             <span class="text-uppercase page-subtitle">Agenda Kegiatan</span>
             <h3 class="page-title"> Semua Kegiatan</h3>
         </div>
-        <div class="col-12 col-sm-6 text-center text-sm-left mb-4 mb-sm-0">
-        <form action="<?php echo site_url('operator/filter_surat');?>"  method="get" style="float:right" >
+        <div  class="col-12 col-sm-7 text-center text-sm-left mb-4 mb-sm-0">
+        <form action="<?php echo site_url('operator/list_agenda_umum');?>"  method="get" style="float:right" >
         <div id="transaction-history-date-range" class="input-daterange input-group  input-group-sm ml-auto">
-        <td><select  name="bln1" class="custom-select custom-select-sm" style="max-width: 130px;">
-                <option value="1" selected>Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">november</option>
-                <option value="12">Desember</option>
-            </select></td>
-			<select name="bln2" class="custom-select custom-select-sm" style="max-width: 130px;">
-                <option value="1">Januari</option>
-                <option value="2">Februari</option>
-                <option value="3">Maret</option>
-                <option value="4">April</option>
-                <option value="5">Mei</option>
-                <option value="6">Juni</option>
-                <option value="7">Juli</option>
-                <option value="8">Agustus</option>
-                <option value="9">September</option>
-                <option value="10">Oktober</option>
-                <option value="11">november</option>
-                <option value="12" selected>Desember</option>
-            </select></td>
-            <select name="tahun" class="custom-select custom-select-sm" style="max-width: 130px;">
-                <?php
-                $mulai= date('Y') ;
-                for($i = $mulai;$i>$mulai - 50;$i--){
-                $sel = $i == date('Y') ? ' selected="selected"' : '';
-                echo '<option value="'.$i.'"'.$sel.'>'.$i.'</option>';
-                }
-                ?>
-            </select>              
+        <input type="text" name="query" class=" custom-select-sm" placeholder="search.." >
+        <input type="date" name="tglMulai" class="custom-select custom-select-sm" >
+        - 
+        <input type="date" name="tglSelesai" class="custom-select custom-select-sm" >
+
             <button  type="submit" class="input-group-append form-control btn btn-white" style="max-width: 40px;">
                 <i class="material-icons">search</i>
             </button>
@@ -89,8 +58,8 @@
                                     <td class="text-center">
                                     <div class='vl' >
                                     <div class="text-center text-sm-center mb-4 mb-sm-0" style="border-left: 6px solid #4ba9e7; height: 70px;">
-                                        <h3 class="page-title font-weight-bold text-primary"><?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "d") ; ?></h3>
-                                        <span class="text-uppercase page-subtitle text-primary"><?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "F") ; ?></span>
+                                        <h3 class="page-title font-weight-bold text-primary pl-2"><?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "d") ; ?></h3>
+                                        <span class="text-uppercase page-subtitle text-primary pl-2"><?php $date = date_create($u->tanggal_pemakaian); echo date_format($date, "F") ; ?></span>
                                     </div>
                                     </div>
                                     </td>
@@ -126,7 +95,7 @@
                                                 }
                                             } ?>  
                                             </info><i class="tiny material-icons text-primary">fiber_manual_record</i>
-                                        <info>Penyelenggara :<?php foreach ($penyelenggara as $a){if ($a->id_penyelenggara == $u->penyelenggara) :echo $a->penyelenggara;endif;}  ?></info><br>
+                                        <info>Penyelenggara : <?= $u->penyelenggara;?></info><br>
 										<info>Keterangan : <?php echo $u->keterangan?> </info>
                                     </div>
                                     </td>
@@ -143,9 +112,5 @@
             </div>
             </div>
 
-          <script type="text/javascript">
-
-
-</script>
-
+         
 

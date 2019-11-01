@@ -134,7 +134,7 @@ class Validator extends CI_Controller{
 
 	function list_agenda_umum(){
 		$date = date("Y-m-d");
-		$data['main_view'] = 'mahasiswa/v_list_agenda';
+		$data['main_view'] = 'validator/v_list_agenda';
 		$data['agenda'] = $this->m_admin->get_data_agenda_umum($date);
 		$data['ruangan_agenda'] = $this->m_admin->get_data_ruangan_agenda($date);
 		$data['ruangan'] = $this->m_admin->tampilRuangan()->result();
@@ -1634,65 +1634,25 @@ class Validator extends CI_Controller{
 					redirect('validator/input_ruangan_peminjaman_non_rutin/'.$id_peminjaman_non_rutin);
 				}else{
 					$id_jam_non_rutin=0;
+					$waktu = null; 
+					$count = 0;
 					for($z = $jam_mulai_pemakaian; $z <= $jam_selesai_pemakaian; $z++){
-						if($z==8 ){
-							if($j_ruangan == 'rutin'){
+						if($j_ruangan != 'rutin'){
+							$id_jam_non_rutin=0;
+						}else{
+							if($z==8 || $z==9 ){
 								$id_jam_non_rutin=1;
-							}else{
-								$id_jam_non_rutin=0;
-							}
-							$data = array(
-								'id_peminjaman_non_rutin' => $id_peminjaman_non_rutin,
-								'id_ruangan' => $id_ruangan_input,
-								'id_peminjam' => $id_peminjam,
-								'id_jam_kuliah' => $id_jam_non_rutin
-							);
-							$this->m_admin->tambahdata($data,'detail_peminjaman_non_rutin');
-						}elseif($z==10 ){
-							if($j_ruangan == 'rutin'){
+							}else if($z==10 || $z==11 ){
 								$id_jam_non_rutin=2;
-							}else{
-								$id_jam_non_rutin=0;
-							}
-							$data = array(
-								'id_peminjaman_non_rutin' => $id_peminjaman_non_rutin,
-								'id_ruangan' => $id_ruangan_input,
-								'id_peminjam' => $id_peminjam,
-								'id_jam_kuliah' => $id_jam_non_rutin
-							);
-							$this->m_admin->tambahdata($data,'detail_peminjaman_non_rutin');
-						}elseif($z==13 ){
-							if($j_ruangan == 'rutin'){
+							}else if($z==12 || $z==13 || $z==14){
 								$id_jam_non_rutin=3;
-							}else{
-								$id_jam_non_rutin=0;
-							}
-							$data = array(
-								'id_peminjaman_non_rutin' => $id_peminjaman_non_rutin,
-								'id_ruangan' => $id_ruangan_input,
-								'id_peminjam' => $id_peminjam,
-								'id_jam_kuliah' => $id_jam_non_rutin
-							);
-							$this->m_admin->tambahdata($data,'detail_peminjaman_non_rutin');
-						}elseif($z==17 ){
-							if($j_ruangan == 'rutin'){
+							}else if($z==15 || $z==16  ){
 								$id_jam_non_rutin=4;
-							}else{
-								$id_jam_non_rutin=0;
-							}
-							$data = array(
-								'id_peminjaman_non_rutin' => $id_peminjaman_non_rutin,
-								'id_ruangan' => $id_ruangan_input,
-								'id_peminjam' => $id_peminjam,
-								'id_jam_kuliah' => $id_jam_non_rutin
-							);
-							$this->m_admin->tambahdata($data,'detail_peminjaman_non_rutin');
-						}elseif($z==19){
-							if($j_ruangan == 'rutin'){
+							}else if($z==18 || $z==19 || $z==20 || $z==21){
 								$id_jam_non_rutin=5;
-							}else{
-								$id_jam_non_rutin=0;
 							}
+						}
+						if($waktu != $id_jam_non_rutin || $count == 0){
 							$data = array(
 								'id_peminjaman_non_rutin' => $id_peminjaman_non_rutin,
 								'id_ruangan' => $id_ruangan_input,
@@ -1700,6 +1660,8 @@ class Validator extends CI_Controller{
 								'id_jam_kuliah' => $id_jam_non_rutin
 							);
 							$this->m_admin->tambahdata($data,'detail_peminjaman_non_rutin');
+							$waktu = $id_jam_non_rutin;
+							$count++;
 						}
 					}
 				}
@@ -1893,7 +1855,7 @@ class Validator extends CI_Controller{
 
 				if($result_non_rutin > 0 ){
 					$this->session->set_flashdata('notif', "GAGAL! Ruangan Digunakan Sudah Digunakan Pada Jam tersebut ");
-					redirect('validator/input_ruangan_peminjaman_khusus/'.$id_peminjaman_non_rutin);
+					redirect('mahasiswa/input_ruangan_peminjaman_khusus/'.$id_peminjaman_non_rutin);
 				}else{
 					$id_jam_non_rutin=0;
 					for($z = $jam_mulai_pemakaian; $z <= $jam_selesai_pemakaian; $z++){
