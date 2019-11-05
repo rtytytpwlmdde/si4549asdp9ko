@@ -188,9 +188,8 @@ header("Cache-Control: max-age=300, must-revalidate");
                             
 							
                              <td class="sorting_1" style="">
-								<a href="<?php 	foreach($penyelenggara as $acc){
-													if($u->penyelenggara == $acc->id_penyelenggara){								
-														if($acc -> status == '1' ){
+								<a href="<?php 								
+														if($u->status == '1' ){
 															if($u->status_wakadek == 'setuju'){
 																echo site_url('validator/validasi/'.$u->id_peminjaman_non_rutin.'/'.$u->id_peminjam.'/setuju');
 																
@@ -202,8 +201,6 @@ header("Cache-Control: max-age=300, must-revalidate");
 															echo site_url('validator/validasi/'.$u->id_peminjaman_non_rutin.'/'.$u->id_peminjam.'/setuju');
 															
 														}
-													}	
-								}	
 												?>"  class="btn btn-primary " title="Setuju Peminjaman">
                                     <i class="material-icons">check</i>
                                 </a>
